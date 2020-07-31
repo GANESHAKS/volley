@@ -9,7 +9,7 @@ public  final class Intents {
         Intent intent = new Intent();
         intent.setClassName(
                 PACKAGE_NAME,
-                PACKAGE_NAME + ".api1.auth");
+                PACKAGE_NAME + ".auth.registration");
         return intent;
     }
 

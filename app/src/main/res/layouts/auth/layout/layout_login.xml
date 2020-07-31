@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".auth.LoginActivity"
+    android:background="@drawable/custom_gradient"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+
+        android:orientation="vertical"
+        >
+        <TextView
+            android:text=" Login "
+            style="@style/Header"
+            android:layout_marginTop="40dp"
+            />
+        <EditText
+            style="@style/Header"
+            android:layout_marginTop="80dp"
+            android:textSize="20dp"
+            android:hint="Enter username or email here!!!"
+            android:inputType="text"
+            android:alpha="0.8"
+
+            android:background="@drawable/custom_edittext" />
+
+        <EditText
+            style="@style/Header"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPassword"
+            android:hint="Enter Password here!!!"
+            android:textSize="20dp"
+            android:background="@drawable/custom_edittext"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
+            android:text="login"
+            />
+
+
+    </LinearLayout>
+
+
+</ScrollView>
