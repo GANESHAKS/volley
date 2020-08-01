@@ -4,61 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.LoginActivity"
     android:background="@drawable/custom_gradient"
-    >
+    tools:context=".auth.LoginActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-
-
-        android:orientation="vertical"
-        >
         <TextView
-            android:text=" Login "
-            style="@style/Header"
-            android:layout_marginTop="40dp"
-            />
-        <EditText
-            style="@style/Header"
-            android:layout_marginTop="80dp"
-            android:textSize="20dp"
-            android:hint="Enter username or email here!!!"
-            android:inputType="text"
-            android:alpha="0.8"
-
-            android:background="@drawable/custom_edittext" />
-
-        <EditText
             style="@style/Header"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:inputType="textPassword"
-            android:hint="Enter Password here!!!"
-            android:textSize="20dp"
-            android:background="@drawable/custom_edittext"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="10dp"
-            android:text="login"
-            />
-        <TextView
+            android:padding="10dp"
+            android:text=" Login "
+            android:textColor="#996666"
+            android:textSize="50sp" />
+
+
+        <LinearLayout
+            style="@style/linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="already a user click here to Register"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="#0000ff"
-            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            >
 
 
-            />
+            <EditText
+                style="@style/Header.edittext"
+                android:layout_marginTop="80dp"
+                android:hint="Enter username or email here!!!"
+                android:inputType="text"
+                android:textSize="20dp"
+
+                />
+
+            <EditText
+                style="@style/Header.edittext"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+
+                android:hint="Enter Password here!!!"
+                android:inputType="textPassword"
+                android:textSize="20dp"
+                app:endIconMode="password_toggle"
+
+
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="login" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already a user click here to Login"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:textColor="#0000ff"
+                android:clickable="true"
+                android:onClick="onClick"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
-
-
 </ScrollView>

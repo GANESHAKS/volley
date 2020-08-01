@@ -9,25 +9,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pro.volley.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
     Intent i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_login);
+        setContentView(R.layout.layout_registration);
     }
-
 
     public void onClick(View view) {
         Toast.makeText(getApplicationContext(), "affasfasfa", Toast.LENGTH_SHORT).show();
 
-
-
         if(i==null){
-            i=new Intent(LoginActivity.this,RegistrationActivity.class);
+            i=new Intent(RegistrationActivity.this,LoginActivity.class);
             startActivity(i);finish();
         }else {
-            startActivity(i);finish();
+            startActivity(i);
+            finish();
         }
 
     }
