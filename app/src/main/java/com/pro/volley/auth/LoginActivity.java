@@ -17,18 +17,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void onClick(View view) {
-
+    public void et_click(View view) {
 
         Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
-
         startActivity(i);
         finish();
-
 
     }
 
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void bt_login_click(View view) {
+
+
+
     }
 }

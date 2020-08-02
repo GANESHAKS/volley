@@ -59,7 +59,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="login" />
+                android:text="login"
+                android:onClick="bt_login_click"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +71,7 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="#0000ff"
                 android:clickable="true"
-                android:onClick="onClick"/>
+                android:onClick="et_click"/>
 
 
         </LinearLayout>
