@@ -28,5 +28,10 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
+        startActivity(i);
+        finish();
+
     }
 }
