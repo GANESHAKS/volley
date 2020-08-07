@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/custom_gradient_auth"
+   style="@style/Theme.Transparent"
     tools:context=".auth.LoginActivity">
 
     <LinearLayout
@@ -32,6 +32,7 @@
 
 
             <EditText
+                android:id="@+id/et_email_auth"
                 style="@style/Header.edittext"
                 android:layout_marginTop="80dp"
                 android:hint="Enter username or email here!!!"
@@ -54,6 +55,7 @@
                 />
 
             <Button
+                android:id="@+id/bt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
