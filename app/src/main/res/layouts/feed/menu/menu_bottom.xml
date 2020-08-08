@@ -19,7 +19,7 @@
 
          />
     <item
-        android:id="@+id/details"
+        android:id="@+id/detailFragment"
         android:icon="@drawable/ic_details"
         android:title="details" />
 

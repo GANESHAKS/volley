@@ -20,4 +20,9 @@
         android:name="com.pro.volley.calssroom.ClassroomFragment"
         android:label="layout_classroom"
         tools:layout="@layout/layout_classroom" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.pro.volley.details.DetailFragment"
+        android:label="layout_detail"
+        tools:layout="@layout/layout_detail" />
 </navigation>
