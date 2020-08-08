@@ -14,7 +14,7 @@
         android:id="@+id/circularFragment"
         android:name="com.pro.volley.circular.CircularFragment"
         android:label="fragment_circular"
-        tools:layout="@layout/fragment_circular" />
+        tools:layout="@layout/layout_circular" />
     <fragment
         android:id="@+id/classroomFragment"
         android:name="com.pro.volley.calssroom.ClassroomFragment"

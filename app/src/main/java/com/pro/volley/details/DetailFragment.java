@@ -1,4 +1,4 @@
-package com.pro.volley.circular;
+package com.pro.volley.details;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.pro.volley.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CircularFragment#newInstance} factory method to
+ * Use the {@link DetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircularFragment extends Fragment {
+public class DetailFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class CircularFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CircularFragment() {
+    public DetailFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class CircularFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CircularFragment.
+     * @return A new instance of fragment DetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CircularFragment newInstance(String param1, String param2) {
-        CircularFragment fragment = new CircularFragment();
+    public static DetailFragment newInstance(String param1, String param2) {
+        DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class CircularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_circular, container, false);
+        return inflater.inflate(R.layout.layout_detail, container, false);
     }
 }

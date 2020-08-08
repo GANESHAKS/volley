@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_circular"/>
 
          />
+    <item android:id="@+id/details"
+        android:title="details"
+        android:icon="@drawable/ic_class"
+        />
 
 
 
