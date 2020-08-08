@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.pro.volley.MainActivity;
 import com.pro.volley.R;
-import com.pro.volley.home.Home;
 
 public class LoginActivity extends Activity {
 
@@ -23,7 +21,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
-        sharedPreferences=getSharedPreferences("com.pro.volley.mainactivity",MODE_PRIVATE);
+        sharedPreferences=this.getSharedPreferences("com.pro.volley.login",MODE_PRIVATE);
         bt_login=findViewById(R.id.bt_login);
         et_email=findViewById(R.id.et_email_auth);
 
@@ -32,7 +30,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 sharedPreferences.edit().putString("email",et_email.getText().toString()).apply();
-                Intent i=new Intent(LoginActivity.this, Home.class);
+                Intent i=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();
             }

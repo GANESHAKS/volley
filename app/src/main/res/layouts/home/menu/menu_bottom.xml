@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/feedFragment"
+
+            android:title="feed"
+            android:icon="@drawable/ic_home"/>
+        <item
+            android:id="@+id/classroomFragment"
+
+            android:title="class"
+            android:icon="@drawable/ic_class"/>
+        <item
+            android:id="@+id/circularFragment"
+
+            android:title="circular"
+            android:icon="@drawable/ic_circular"/>
+
+         />
+
+
+
+</menu>

@@ -8,7 +8,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pro.volley.auth.LoginActivity;
-import com.pro.volley.auth.RegistrationActivity;
 
 public class Splash extends AppCompatActivity {
 public static int Splash_time=400;
@@ -17,8 +16,8 @@ SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        sharedPreferences=this.getSharedPreferences("com.pro.firebase.login",MODE_PRIVATE);
+        setContentView(R.layout.layout_splash);
+        sharedPreferences=this.getSharedPreferences("com.pro.volley.login",MODE_PRIVATE);
 
 
 
@@ -27,7 +26,7 @@ SharedPreferences sharedPreferences;
                 public void run() {
                     Intent i;
                     if (sharedPreferences.contains("email")) {
-                        i = new Intent(Splash.this, RegistrationActivity.class);//this action has to change
+                        i = new Intent(Splash.this, MainActivity.class);//this action has to change
                         //start home activity
                         startActivity(i);
                         finish();
