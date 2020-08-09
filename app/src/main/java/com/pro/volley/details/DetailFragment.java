@@ -1,21 +1,30 @@
 package com.pro.volley.details;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.pro.volley.R;
+import com.pro.volley.details.attendance.Attendance;
+import com.pro.volley.details.department.Department;
+import com.pro.volley.details.events.Events;
+import com.pro.volley.details.timetable.TimeTable;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements View.OnClickListener {
+    //declarions
+    CardView cv_dept, cv_event, cv_timetable, cv_attendence;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,13 +63,62 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_detail, container, false);
+        final View view = inflater.inflate(R.layout.layout_detail, container, false);
+
+        cv_dept = view.findViewById(R.id.tv_dept);
+        cv_event = view.findViewById(R.id.tv_event);
+        cv_timetable = view.findViewById(R.id.tv_timetable);
+        cv_attendence = view.findViewById(R.id.tv_attendance);
+
+        cv_dept.setOnClickListener(this);
+        cv_event.setOnClickListener(this);
+        cv_timetable.setOnClickListener(this);
+        cv_attendence.setOnClickListener(this);
+
+        return view;
+
+
     }
+
+
+    @Override
+    public void onClick(View v) {
+        final Intent i;
+        switch (v.getId()) {
+            case R.id.tv_attendance:
+                Toast.makeText(getContext(), "Attenence", Toast.LENGTH_SHORT).show();
+                 i = new Intent(getContext(), Attendance.class);
+                startActivity(i);
+
+                return;
+            case R.id.tv_dept:
+                Toast.makeText(getContext(), "dept", Toast.LENGTH_SHORT).show();
+                 i= new Intent(getContext(), Department.class);
+                startActivity(i);
+                return;
+            case R.id.tv_event:
+                Toast.makeText(getContext(), "event", Toast.LENGTH_SHORT).show();
+                 i= new Intent(getContext(), Events.class);
+                startActivity(i);
+                return;
+            case R.id.tv_timetable:
+                Toast.makeText(getContext(), "timetable", Toast.LENGTH_SHORT).show();
+                i= new Intent(getContext(), TimeTable.class);
+                startActivity(i);
+                return;
+
+        }
+    }
+
 }

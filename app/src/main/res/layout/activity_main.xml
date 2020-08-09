@@ -6,22 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appbar">
+        android:layout_height="?attr/actionBarSize"
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="My College"
-            app:menu="@menu/menu_top"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
 
-            />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
 
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+
+        android:layout_marginRight="10dp"
+        android:elevation="1dp"
+        app:menu="@menu/menu_top"
+        app:title="My College" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationview"
@@ -30,13 +33,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:elevation="20dp"
         android:layout_gravity="bottom"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginBottom="0dp"
-        app:menu="@menu/menu_bottom"
-        />
+        android:focusedByDefault="true"
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        app:menu="@menu/menu_bottom" />
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -45,12 +49,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/navigationview"
 
-        android:layout_below="@+id/appbar"
+        android:layout_below="@+id/topAppBar"
         android:layout_alignParentStart="true"
+
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
+
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="0dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
