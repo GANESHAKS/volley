@@ -20,6 +20,7 @@ public class TimeTable extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_time_table);
         toolbar=findViewById(R.id.toolbar);
+        toolbar.setTitle("Time Table");
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

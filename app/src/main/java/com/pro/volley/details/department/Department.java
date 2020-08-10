@@ -19,7 +19,7 @@ public class Department extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_department);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar=findViewById(R.id.toolbar); toolbar.setTitle("Department");
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

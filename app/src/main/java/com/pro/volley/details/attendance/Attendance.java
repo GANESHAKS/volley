@@ -20,7 +20,7 @@ public class Attendance extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_attendance);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar=findViewById(R.id.toolbar); toolbar.setTitle("Attendence");
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

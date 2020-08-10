@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:padding="10dp"
     tools:context=".auth.LoginActivity">
 
     <LinearLayout
@@ -27,8 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
 
             <EditText
@@ -43,10 +43,10 @@
                 />
 
             <EditText
+                android:id="@+id/et_pass_login"
                 style="@style/Header.edittext"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
-                android:id="@+id/et_pass_login"
                 android:hint="Enter Password here!!!"
                 android:inputType="textPassword"
                 android:textSize="20dp"
@@ -65,17 +65,18 @@
                 android:text="login"
 
                 />
+
             <TextView
+                android:id="@+id/tv_reg_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already a user click here to Login"
-                android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:textColor="#0000ff"
                 android:clickable="true"
-                android:id="@+id/tv_reg_login"
-                android:onClick="onClick"/>
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="Already a user click here to Login"
+                android:textColor="#0000ff" />
 
 
         </LinearLayout>

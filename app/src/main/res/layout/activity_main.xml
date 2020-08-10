@@ -21,6 +21,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
         android:focusedByDefault="true"
+        app:itemIconTint="@color/material_on_background_emphasis_high_type"
         android:theme="@style/Theme.MaterialComponents.DayNight"
         app:menu="@menu/menu_bottom" />
 
@@ -34,14 +35,15 @@
         android:layout_above="@+id/navigationview"
 
 
+        android:layout_below="@+id/toolbar"
+
         android:layout_alignParentStart="true"
+
 
         android:layout_alignParentEnd="true"
 
 
-        android:layout_marginTop="0100dp"
-
-
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="0dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />

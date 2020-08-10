@@ -1,9 +1,11 @@
 package com.pro.volley.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 
 public class Profile extends AppCompatActivity {
@@ -17,6 +19,9 @@ public class Profile extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i =new Intent(Profile.this, MainActivity.class);
+        startActivity(i);
+        finish();
 
     }
 }

@@ -8,21 +8,21 @@
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.pro.volley.feed.FeedFragment"
-        android:label="layout_feed"
+        android:label="Feed"
         tools:layout="@layout/layout_feed" />
     <fragment
         android:id="@+id/circularFragment"
         android:name="com.pro.volley.circular.CircularFragment"
-        android:label="fragment_circular"
+        android:label="Circular"
         tools:layout="@layout/layout_circular" />
     <fragment
         android:id="@+id/classroomFragment"
         android:name="com.pro.volley.calssroom.ClassroomFragment"
-        android:label="layout_classroom"
+        android:label="Classroom"
         tools:layout="@layout/layout_classroom" />
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.pro.volley.details.DetailFragment"
-        android:label="layout_detail"
+        android:label="Detail"
         tools:layout="@layout/layout_detail" />
 </navigation>

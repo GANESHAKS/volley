@@ -19,7 +19,7 @@ public class Events extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_events);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar=findViewById(R.id.toolbar); toolbar.setTitle("Events");
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
