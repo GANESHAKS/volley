@@ -17,7 +17,7 @@ SharedPreferences sharedPreferences;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
-        sharedPreferences=this.getSharedPreferences("com.pro.volley.login",MODE_PRIVATE);
+        sharedPreferences=this.getSharedPreferences("com.pro.volley",MODE_PRIVATE);
 
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   android:background="@drawable/custom_gradient_auth"
+
     tools:context=".auth.LoginActivity">
 
     <LinearLayout
@@ -32,7 +32,8 @@
 
 
             <EditText
-                android:id="@+id/et_email_auth"
+                android:id="@+id/et_email_login"
+
                 style="@style/Header.edittext"
                 android:layout_marginTop="80dp"
                 android:hint="Enter username or email here!!!"
@@ -45,7 +46,7 @@
                 style="@style/Header.edittext"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
-
+                android:id="@+id/et_pass_login"
                 android:hint="Enter Password here!!!"
                 android:inputType="textPassword"
                 android:textSize="20dp"
@@ -62,7 +63,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="login"
-                android:onClick="bt_login_click"
+
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -73,7 +74,8 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="#0000ff"
                 android:clickable="true"
-                android:onClick="et_click"/>
+                android:id="@+id/tv_reg_login"
+                android:onClick="onClick"/>
 
 
         </LinearLayout>
