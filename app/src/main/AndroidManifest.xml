@@ -14,16 +14,18 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Settings"></activity>
         <activity android:name=".profile.Profile" />
-        <activity android:name=".details.timetable.TimeTable" />
-        <activity android:name=".details.events.Events" />
-        <activity android:name=".details.department.Department" />
-        <activity android:name=".details.attendance.Attendance" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".details.timetable.TimeTable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".details.events.Events" />
+        <activity android:name=".details.department.Department" />
+        <activity android:name=".details.attendance.Attendance" />
+        <activity android:name=".MainActivity">
+
         </activity>
         <activity android:name=".auth.RegistrationActivity" />
         <activity android:name=".auth.LoginActivity" />
