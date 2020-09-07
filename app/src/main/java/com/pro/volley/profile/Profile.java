@@ -203,7 +203,15 @@ iv_profile_pic=findViewById(R.id.iv_profile_pic);
         if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result=CropImage.getActivityResult(data);
             if(resultCode==RESULT_OK){
-                iv_profile_pic.setImageURI(result.getUri());
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                iv_profile_pic.setImageBitmap(bitmap);
             }
         }
     }
