@@ -24,7 +24,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 Intent i;
-                if (sharedPreferences.contains("currentuser")) {
+                if (sharedPreferences.contains("email")) {
                     i = new Intent(Splash.this, MainActivity.class);//this action has to change
                     //start home activity
                     startActivity(i);

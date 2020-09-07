@@ -91,7 +91,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     if (jsonObject.getString("title").equals("success")) {
                         bool = true;
                         Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        sharedPreferences.edit().putString("currentuser", e).apply();
+                        sharedPreferences.edit().putString("email", e).apply();
+                        sharedPreferences.edit().putString("usn", jsonObject.getString("usn")).apply();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(i);
                         finish(); // return;

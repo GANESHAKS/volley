@@ -8,232 +8,268 @@
 
     tools:context=".profile.Profile">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/sr_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-
+        <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="1">
 
-            android:layout_height="405dp"
+            <RelativeLayout
 
-            android:orientation="vertical">
-
-            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@drawable/custom_profile_background"
-                android:gravity="center"
+
+                android:layout_height="405dp"
 
                 android:orientation="vertical">
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/dronecollege"
-                    app:civ_border_color="#EEEEEE"
-                    app:civ_border_width="4dp"
-                    app:civ_shadow="true"
 
-                    app:civ_shadow_radius="1"
-                    app:civ_shadow_color="#8BC34A"/>
-
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_profile1"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="225dp"
-                android:layout_marginRight="50dp">
-
-                <GridLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:columnCount="2"
+                    android:layout_height="300dp"
+                    android:background="@drawable/custom_profile_background"
+                    android:gravity="center"
 
-                    android:padding="8dp"
-                    android:rowCount="2">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="0"
-                        android:layout_rowWeight="1"
-                        android:layout_column="0"
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:src="@drawable/dronecollege"
+                        app:civ_border_color="#ff0000"
+                        app:civ_border_width="2dp"
+                        app:civ_shadow="true"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginTop="20dp"
+                        app:civ_shadow_color="#8BC34A"
+                        app:civ_shadow_radius="1" />
 
-                        android:layout_columnWeight="1"
-                        android:gravity="center"
+                </LinearLayout>
 
-                        android:text="Name" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-                        android:layout_row="1"
-                        android:layout_rowWeight="1"
-                        android:layout_column="0"
-                        android:layout_columnWeight="1"
-
-                        android:gravity="center"
-                        android:text="name" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="0"
-                        android:layout_rowWeight="1"
-
-                        android:layout_column="1"
-                        android:layout_columnWeight="1"
-                        android:gravity="center"
-                        android:text="USN" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="1"
-                        android:layout_rowWeight="1"
-                        android:layout_column="1"
-                        android:layout_columnWeight="1"
-                        android:gravity="center"
-
-                        android:text="usn" />
-
-                </GridLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_below="@+id/cv_profile1"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="50dp"
-
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:background="#ffffff">
-
-                <GridLayout
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_profile1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:columnCount="2"
+                    android:layout_height="150dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="225dp"
+                    android:layout_marginRight="50dp">
 
-                    android:padding="8dp"
-                    android:rowCount="4">
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:columnCount="2"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="0"
-                        android:layout_rowWeight="1"
-                        android:layout_column="0"
+                        android:padding="8dp"
+                        android:rowCount="2">
 
-                        android:layout_columnWeight="1"
-                        android:gravity="center"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="0"
+                            android:layout_rowWeight="1"
+                            android:layout_column="0"
 
-                        android:text="Email" />
+                            android:layout_columnWeight="1"
+                            android:gravity="center"
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                            android:text="Name" />
 
-                        android:layout_height="wrap_content"
-                        android:layout_row="1"
-                        android:layout_rowWeight="1"
-                        android:layout_column="0"
-                        android:layout_columnWeight="1"
+                        <TextView
+                            android:layout_width="wrap_content"
 
-                        android:gravity="center"
-                        android:text="Phone no" />
+                            android:layout_height="wrap_content"
+                            android:layout_row="1"
+                            android:layout_rowWeight="1"
+                            android:layout_column="0"
+                            android:layout_columnWeight="1"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="0"
-                        android:layout_rowWeight="1"
+                            android:gravity="center"
+                            android:text="USN" />
 
-                        android:layout_column="1"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
-                        android:text="email@gmail.com" />
+                        <TextView
+                            android:id="@+id/tv_profile_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="0"
+                            android:layout_rowWeight="1"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="1"
-                        android:layout_rowWeight="1"
-                        android:layout_column="1"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
+                            android:layout_column="1"
+                            android:layout_columnWeight="1"
+                            android:gravity="center"
+                            android:text="name" />
 
-                        android:text="9900887766" />
+                        <TextView
+                            android:id="@+id/tv_profile_usn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="1"
+                            android:layout_rowWeight="1"
+                            android:layout_column="1"
+                            android:layout_columnWeight="1"
+                            android:gravity="center"
+
+                            android:text="usn" />
+
+                    </GridLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_below="@+id/cv_profile1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="50dp"
+
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:background="#ffffff">
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:columnCount="2"
+
+                        android:padding="8dp"
+                        android:rowCount="5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="0"
+                            android:layout_rowWeight="1"
+                            android:layout_column="0"
+
+                            android:layout_columnWeight="1"
+                            android:gravity="center"
+
+                            android:text="Email" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:layout_row="1"
+                            android:layout_rowWeight="1"
+                            android:layout_column="0"
+                            android:layout_columnWeight="1"
+
+                            android:gravity="center"
+                            android:text="Phone no" />
+
+                        <TextView
+                            android:id="@+id/tv_profile_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="0"
+                            android:layout_rowWeight="1"
+
+                            android:layout_column="1"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+                            android:text="email@gmail.com" />
+
+                        <TextView
+                            android:id="@+id/tv_profile_phno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="1"
+                            android:layout_rowWeight="1"
+                            android:layout_column="1"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+
+                            android:text="9900887766" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="2"
-                        android:layout_rowWeight="1"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="2"
+                            android:layout_rowWeight="1"
 
-                        android:layout_column="0"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
-                        android:text="field" />
+                            android:layout_column="0"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+                            android:text="Department" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="2"
-                        android:layout_rowWeight="1"
-                        android:layout_column="1"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
+                        <TextView
+                            android:id="@+id/tv_profile_dept"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="2"
+                            android:layout_rowWeight="1"
+                            android:layout_column="1"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+                            android:text="dept" />
 
-                        android:text="field data" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="3"
+                            android:layout_rowWeight="1"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="3"
-                        android:layout_rowWeight="1"
+                            android:layout_column="0"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+                            android:text="Sem" />
 
-                        android:layout_column="0"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
-                        android:text="field" />
+                        <TextView
+                            android:id="@+id/tv_profile_sem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="3"
+                            android:layout_rowWeight="1"
+                            android:layout_column="1"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_row="3"
-                        android:layout_rowWeight="1"
-                        android:layout_column="1"
-                        android:layout_columnWeight="2"
-                        android:gravity="center"
+                            android:text="sem" />
 
-                        android:text="field data" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="4"
+                            android:layout_rowWeight="1"
+
+                            android:layout_column="0"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+                            android:text="Sec" />
+
+                        <TextView
+                            android:id="@+id/tv_profile_sec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_row="4"
+                            android:layout_rowWeight="1"
+                            android:layout_column="1"
+                            android:layout_columnWeight="2"
+                            android:gravity="center"
+
+                            android:text="sec" />
 
 
-                </GridLayout>
+                    </GridLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+            </RelativeLayout>
 
-        </RelativeLayout>
 
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
