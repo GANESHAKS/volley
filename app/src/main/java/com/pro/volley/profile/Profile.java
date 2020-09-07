@@ -1,12 +1,22 @@
 package com.pro.volley.profile;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -19,9 +29,14 @@ import com.android.volley.toolbox.Volley;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 import com.pro.volley.auth.LoginActivity;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +45,10 @@ public class Profile extends AppCompatActivity {
     SharedPreferences sharedPreferences,sharedPreferences_profile;
     SwipeRefreshLayout swipeRefreshLayout;
     String usn, name, email, phno, sem, sec, dept;
+    ImageView iv_profile_pic;
+    private Uri filePath,uri;
+    private static int SELECT_PHOTO = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +56,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.layout_profile);
         sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
         sharedPreferences_profile= this.getSharedPreferences("com.pro.volley.profile", MODE_PRIVATE);
-
+iv_profile_pic=findViewById(R.id.iv_profile_pic);
         swipeRefreshLayout = findViewById(R.id.sr_profile);
         tv_email = findViewById(R.id.tv_profile_email);
         tv_name = findViewById(R.id.tv_profile_name);
@@ -86,7 +105,21 @@ public class Profile extends AppCompatActivity {
 
             }
         });
+        iv_profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choose_file();
+
+            }
+        });
+
     }
+
+    private void choose_file() {
+
+        CropImage.startPickImageActivity(this);
+    }
+
 
     private void stringrequest() {
         final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -135,7 +168,7 @@ public class Profile extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("usn", "17cs030");
+                params.put("usn", sharedPreferences.getString("usn","001"));
                 return params;
             }
         };
@@ -153,4 +186,33 @@ public class Profile extends AppCompatActivity {
         finish();
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE&&resultCode== Activity.RESULT_OK){
+             filePath=CropImage.getPickImageResultUri(this,data);
+             if(CropImage.isReadExternalStoragePermissionsRequired(this,filePath)){
+                uri=filePath;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }else {
+                 startCrop(filePath);
+             }
+
+        }
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result=CropImage.getActivityResult(data);
+            if(resultCode==RESULT_OK){
+                iv_profile_pic.setImageURI(result.getUri());
+            }
+        }
+    }
+
+    private void startCrop(Uri filePath) {
+        CropImage.activity(filePath).setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
+    }
+
+
 }
