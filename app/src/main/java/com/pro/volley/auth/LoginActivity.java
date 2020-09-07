@@ -30,7 +30,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     Button bt_login;
     EditText et_email, et_pass;
 
-    String e = "ganeshka439@gmail.com", p = "12345";
+    String e = "ganeshks439@gmail.com", p = "12345";
     boolean bool = false;
 
     @Override
@@ -81,22 +81,22 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         progressDialog.setMessage("fetching data ");
         progressDialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "login.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "auth/studentLogin.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
                 requestQueue.getCache().clear();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("success").equals("0")) {
+                    if (jsonObject.getString("title").equals("success")) {
                         bool = true;
                         Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        sharedPreferences.edit().putString("email", e).apply();
+                        sharedPreferences.edit().putString("currentuser", e).apply();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(i);
                         finish(); // return;
                     } else {
-                        Toast.makeText(getApplicationContext(), jsonObject.getString("success") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                         bool = false;
                         //return;
 

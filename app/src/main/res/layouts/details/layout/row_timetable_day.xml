@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="70dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_row_timetable_day"
+    android:orientation="vertical"
+
+
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardElevation="20dp"
+    app:cardCornerRadius="5dp"
+   >
+
+    <TextView
+        android:id="@+id/tv_row_timetable_days"
+        android:layout_width="match_parent"
+android:layout_gravity="center"
+        android:gravity="center"
+
+        android:layout_height="match_parent"
+     android:textSize="30sp" />
+</com.google.android.material.card.MaterialCardView>

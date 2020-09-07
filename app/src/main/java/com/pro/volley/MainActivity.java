@@ -3,7 +3,6 @@ package com.pro.volley;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
-
+        toolbar.inflateMenu(R.menu.menu_top);
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationview);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.settings:
                         Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_LONG).show();
-                        i = new Intent(MainActivity.this, Settings.class);
+            i = new Intent(MainActivity.this, Settings.class);
                         startActivity(i);
                         finish();
                         return false;
@@ -61,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
 
     }
+
+
+
 
 
     /*
