@@ -3,6 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Details</string>
     <string name="url">http://192.168.43.180/mycollege/student/</string>
+    <string name="urlroot">http://192.168.43.180</string>
 
     <string-array name="dept_array">
         <item>CS</item>
