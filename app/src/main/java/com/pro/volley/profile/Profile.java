@@ -1,5 +1,7 @@
 package com.pro.volley.profile;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -22,9 +25,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -34,10 +39,13 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,8 +59,8 @@ public class Profile extends AppCompatActivity {
     ImageView iv_profile_pic;
     private Uri filePath, uri;
     Bitmap image;
-    // private static int SELECT_PHOTO = 1;
-    Handler handler1, handler2, handler3, handler4;
+    private static int SELECT_PHOTO = 1;
+    Handler handler1, handler2, handler3,handler4;
     String downloaded_response = "null";
     Bitmap dp;
 
@@ -76,10 +84,10 @@ public class Profile extends AppCompatActivity {
         iv_profile_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  choose_file();
-                Intent intent = new Intent(Profile.this, ProfilePicture.class);
-                //  intent.putExtra("imagedata",imagedata);
-                // intent.putExtra(Intent.EXTRA_TEXT,imagedata);
+              //  choose_file();
+                Intent intent=new Intent(Profile.this,ProfilePicture.class);
+              //  intent.putExtra("imagedata",imagedata);
+               // intent.putExtra(Intent.EXTRA_TEXT,imagedata);
 
 
                 startActivity(intent);
@@ -166,7 +174,7 @@ public class Profile extends AppCompatActivity {
 
             }
         };
-        handler4 = new Handler() {
+         handler4=new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 iv_profile_pic.setImageBitmap(image);
@@ -272,7 +280,7 @@ public class Profile extends AppCompatActivity {
                 }
 
             };
-            Thread t = new Thread(r);
+            Thread t=new Thread(r);
             t.start();
 
             name = sharedPreferences_profile.getString("name", "");
@@ -283,6 +291,9 @@ public class Profile extends AppCompatActivity {
             sem = sharedPreferences_profile.getString("sem", "");
             sec = sharedPreferences_profile.getString("sec", "");
             imgurl = sharedPreferences_profile.getString("pic", "");
+
+
+
 
 
         } else {
@@ -368,6 +379,7 @@ public class Profile extends AppCompatActivity {
     }
 
 
+
     private String bitmapToString(Bitmap bitmap) {
 
 
@@ -394,6 +406,8 @@ public class Profile extends AppCompatActivity {
     }
 
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -402,6 +416,7 @@ public class Profile extends AppCompatActivity {
         finish();
 
     }
+
 
 
 }

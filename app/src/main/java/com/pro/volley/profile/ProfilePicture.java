@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -39,6 +40,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +50,10 @@ public class ProfilePicture extends AppCompatActivity {
 
     ImageView iv_profile;
     SharedPreferences sharedPreferences;
-    Bitmap bitmap, dp;
+    Bitmap profilepic, dp;
     String imagedata;
-    private Uri filePath, uri;
-    Handler handler;
+    private Uri filePath, uri, u;
+    Handler handler, handler2;
     MaterialToolbar toolbar;
 
     @Override
@@ -82,11 +85,13 @@ public class ProfilePicture extends AppCompatActivity {
 
             }
         };
+
         if (sharedPreferences.contains("imagedata")) {
             String s = sharedPreferences.getString("imagedata", "null");
             if (!s.equalsIgnoreCase("null")) {
-                bitmap = stringToBitMap(s);
-                iv_profile.setImageBitmap(bitmap);
+
+                profilepic = stringToBitMap(s);
+                iv_profile.setImageBitmap(profilepic);
             }
 
         } else {
@@ -104,10 +109,49 @@ public class ProfilePicture extends AppCompatActivity {
                 choose_file();
                 return true;
             case R.id.profilepic_share:
+                shareImageUri();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    private void shareImageUri() {
+        if (profilepic != null) {
+
+
+            if (u == null) {
+                u = saveImage(profilepic);
+            }
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, u);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setType("image/png");
+            startActivity(intent);
+        }
+
+
+    }
+
+    private Uri saveImage(Bitmap image) {
+        //TODO - Should be processed in another thread
+        File imagesFolder = new File(getCacheDir(), "images");
+        Uri uri = null;
+        try {
+            imagesFolder.mkdirs();
+            File file = new File(imagesFolder, "shared_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(this, "com.mydomain.fileprovider", file);
+
+        } catch (IOException e) {
+            Log.d("Error", "IOException while trying to write file for sharing: " + e.getMessage());
+        }
+        return uri;
     }
 
     public Bitmap stringToBitMap(String encodedString) {
@@ -152,6 +196,9 @@ public class ProfilePicture extends AppCompatActivity {
                             if (jsonObject.getString("title").equals("success")) {
                                 Log.i("uploadProfilePicture", "msg: Everything is correct");
                                 dp = bitmap;
+                                profilepic = bitmap;
+                                u = saveImage(bitmap);
+
                                 handler.sendEmptyMessage(0);
 
                                 return;
@@ -203,7 +250,28 @@ public class ProfilePicture extends AppCompatActivity {
 
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+        int bc = bitmap.getByteCount();
+        Log.i("image quality:", "Image quality :" + bc);
+
+        if (bitmap.getByteCount()>1000000){
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+            Log.i("image quality:", "Image quality : 1  :" + bc);
+
+
+        }else
+        if (bitmap.getByteCount() > 100000) {
+            Log.i("image quality:", "Image quality  : 2 :" + bc);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+        }else {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+
+        }
+
+
+        bc = byteArrayOutputStream.size();        Log.i("image quality:", "Image quality :" + bc);
+
         byte[] b = byteArrayOutputStream.toByteArray();
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
 
@@ -230,7 +298,10 @@ public class ProfilePicture extends AppCompatActivity {
 
                 Bitmap bitmap = null;
                 try {
+
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
