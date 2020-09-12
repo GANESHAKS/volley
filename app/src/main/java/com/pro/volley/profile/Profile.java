@@ -1,13 +1,15 @@
 package com.pro.volley.profile;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,28 +30,31 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Profile extends AppCompatActivity {
     TextView tv_name, tv_usn, tv_email, tv_phno, tv_sem, tv_dept, tv_sec;
     SharedPreferences sharedPreferences, sharedPreferences_profile;
     SwipeRefreshLayout swipeRefreshLayout;
     String usn, name, email, phno, sem, sec, dept;
-    static String imgurl = "null";
+    static String imgurl = "null", imagedata = "null";
     ImageView iv_profile_pic;
     private Uri filePath, uri;
-    private static int SELECT_PHOTO = 1;
+    Bitmap image;
+    // private static int SELECT_PHOTO = 1;
+    Handler handler1, handler2, handler3, handler4;
+    String downloaded_response = "null";
+    Bitmap dp;
 
 
     @Override
@@ -66,32 +72,174 @@ public class Profile extends AppCompatActivity {
         tv_dept = findViewById(R.id.tv_profile_dept);
         tv_sem = findViewById(R.id.tv_profile_sem);
         tv_sec = findViewById(R.id.tv_profile_sec);
-        if (sharedPreferences_profile.contains("usn")) {
-            update_profile();
-            try {
-                Glide.with(this) //1
-                        // .load("http://192.168.43.180/mycollege/data/student/profile/17cs030.png")
-                        .load(getResources().getString(R.string.urlroot) + imgurl)
-                        .error(R.drawable.dronecollege)
-                        .skipMemoryCache(true) //2
-                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                        .into(iv_profile_pic);
-            } catch (Exception e) {
-                Log.i("Error in download", "error " + e.getMessage());
 
-                e.printStackTrace();
+        iv_profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  choose_file();
+                Intent intent = new Intent(Profile.this, ProfilePicture.class);
+                //  intent.putExtra("imagedata",imagedata);
+                // intent.putExtra(Intent.EXTRA_TEXT,imagedata);
+
+
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+
+        if (sharedPreferences_profile.contains("usn")) {
+            // Toast.makeText(getApplicationContext(),imagedata,Toast.LENGTH_SHORT).show();
+
+
+            updateUserInterface();//update datadirectly
+
+        } else {
+
+
+            downloadDataFromServer();
+
+        }
+        handler1 = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                swipeRefreshLayout.setRefreshing(false);
+
+                if (!downloaded_response.equalsIgnoreCase("null")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(downloaded_response);
+                        if (jsonObject.getString("title").equals("success")) {
+                            // Log.i("Profile :",response);
+                            name = jsonObject.optString("name");
+                            usn = jsonObject.optString("usn");
+                            email = jsonObject.optString("email");
+                            dept = jsonObject.optString("dept");
+                            sem = jsonObject.optString("sem");
+                            sec = jsonObject.optString("sec");
+                            phno = jsonObject.optString("phno");
+                            imgurl = jsonObject.optString("pic");
+
+                            Log.i("profile pic:", downloaded_response);
+                            saveDataInPreference();
+
+                            updateUserInterface();
+                            download_profile_pic();
+
+                            Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+
+                            // return;
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+
+                            //return;
+
+                        }
+
+                    } catch (Exception e) {
+                        Log.i("", "error " + e.getMessage());
+
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "some unexpected Error", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
 
+        };
+        //DOWNLOAD DATA IN BACKGROUND caught error
+        handler2 = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getApplicationContext(), "Error while downloadind ", Toast.LENGTH_SHORT);
+            }
+        };
+        handler3 = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                iv_profile_pic.setImageBitmap(dp);
 
-        } else {
-            stringrequest();
-        }
-        refresh();
+            }
+        };
+        handler4 = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                iv_profile_pic.setImageBitmap(image);
+
+            }
+        };
+        refreshSwipe();
 
     }
 
-    private void savedata() {
+    private void downloadDataFromServer() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "profile/refreshprofile.php", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        requestQueue.getCache().clear();
+
+                        downloaded_response = response;
+
+
+                        handler1.sendEmptyMessage(0);
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        handler2.sendEmptyMessage(0);
+
+
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("usn", sharedPreferences.getString("usn", "001"));
+                        return params;
+                    }
+
+                };
+
+                requestQueue.add(stringRequest);
+
+
+            }
+        };
+        Thread thread = new Thread(r);
+        thread.start();
+
+
+        return;
+    }
+
+    private void refreshSwipe() {
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                downloadDataFromServer();
+
+            }
+        });
+
+    }
+
+    private void saveDataInPreference() {
         sharedPreferences_profile.edit().putString("name", name).apply();
         sharedPreferences_profile.edit().putString("usn", usn).apply();
         sharedPreferences_profile.edit().putString("email", email).apply();
@@ -100,20 +248,47 @@ public class Profile extends AppCompatActivity {
         sharedPreferences_profile.edit().putString("sem", sem).apply();
         sharedPreferences_profile.edit().putString("sec", sec).apply();
         sharedPreferences_profile.edit().putString("pic", imgurl).apply();
+        // sharedPreferences_profile.edit().putString("imagedata", imagedata).apply();
 
 
     }
 
-    private void update_profile() {
+    private void updateUserInterface() {
+        imagedata = sharedPreferences_profile.getString("imagedata", "null");
+        if (!imagedata.equalsIgnoreCase("null")) {
 
-        name = sharedPreferences_profile.getString("name", "001");
-        usn = sharedPreferences_profile.getString("usn", "001");
-        email = sharedPreferences_profile.getString("email", "001");
-        phno = sharedPreferences_profile.getString("phno", "001");
-        dept = sharedPreferences_profile.getString("dept", "001");
-        sem = sharedPreferences_profile.getString("sem", "001");
-        sec = sharedPreferences_profile.getString("sec", "001");
-        imgurl = sharedPreferences_profile.getString("pic", "001");
+
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!imagedata.equalsIgnoreCase("null")) {
+                        image = stringToBitMap(imagedata);
+
+                        //update profile pic
+                    }
+
+                    handler4.sendEmptyMessage(0);
+                }
+
+            };
+            Thread t = new Thread(r);
+            t.start();
+
+            name = sharedPreferences_profile.getString("name", "");
+            usn = sharedPreferences_profile.getString("usn", "");
+            email = sharedPreferences_profile.getString("email", "");
+            phno = sharedPreferences_profile.getString("phno", "");
+            dept = sharedPreferences_profile.getString("dept", "");
+            sem = sharedPreferences_profile.getString("sem", "");
+            sec = sharedPreferences_profile.getString("sec", "");
+            imgurl = sharedPreferences_profile.getString("pic", "");
+
+
+        } else {
+            iv_profile_pic.setImageResource(R.drawable.dronecollege);
+        }
+
 
         tv_name.setText(name);
         tv_usn.setText(usn);
@@ -123,102 +298,101 @@ public class Profile extends AppCompatActivity {
         tv_sec.setText(sec);
         tv_sem.setText(sem);
 
-        //update profile pic
-
 
     }
 
-    private void refresh() {
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    private void download_profile_pic() {
+
+        Runnable r = new Runnable() {
             @Override
-            public void onRefresh() {
+            public void run() {
+                if (!imgurl.equalsIgnoreCase("null")) {
 
-                stringrequest();
+                    try {
 
-            }
-        });
-        iv_profile_pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choose_file();
+                        Glide.with(Profile.this) //1
+                                // .load("http://192.168.43.180/mycollege/data/student/profile/17cs030.png")
+                                .load(getResources().getString(R.string.urlroot) + imgurl)
+                                .error(R.drawable.dronecollege)
+                                .skipMemoryCache(false) //2
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                .into(new CustomTarget<Drawable>() {
+                                    @Override
+                                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
 
-            }
-        });
+                                        dp = ((BitmapDrawable) resource).getBitmap();
+                                        //Toast.makeText(MainActivity.this, "Saving Image...", Toast.LENGTH_SHORT).show();
+                                        // BitMapToString(bitmap);
+                                        //  iv_profile_pic.setImageBitmap(dp);
+                                        imagedata = bitmapToString(dp);
+                                        sharedPreferences_profile.edit().putString("imagedata", imagedata).apply();
 
-    }
-
-    private void choose_file() {
-
-        CropImage.startPickImageActivity(this);
-    }
-
-
-    private void stringrequest() {
-        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "profile/refreshprofile.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                requestQueue.getCache().clear();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("title").equals("success")) {
-                        // Log.i("Profile :",response);
-                        name = jsonObject.optString("name");
-                        usn = jsonObject.optString("usn");
-                        email = jsonObject.optString("email");
-                        dept = jsonObject.optString("dept");
-                        sem = jsonObject.optString("sem");
-                        sec = jsonObject.optString("sec");
-                        phno = jsonObject.optString("phno");
-                        imgurl = jsonObject.optString("pic");
-
-                        Log.i("profile pic:", response);
-                        savedata();
-
-                        update_profile();
-                        download_profile_pic();
-
-                        Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        // return;
+                                        handler3.sendEmptyMessage(0);
 
 
-                    } else {
-                        Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    }
 
-                        //return;
+                                    @Override
+                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                                        //  handler3.sendEmptyMessage(0);
 
+                                    }
+
+                                    @Override
+                                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                        super.onLoadFailed(errorDrawable);
+                                        //handler3.sendEmptyMessage(0);
+
+                                        // Toast.makeText(Profile.this, "Failed to Download Image! Please try again later.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        saveDataInPreference();
+                    } catch (Exception e) {
+                        Log.i("Error in download", "error " + e.getMessage());
+
+                        e.printStackTrace();
                     }
 
-                } catch (Exception e) {
-                    Log.i("Error in download", "error " + e.getMessage());
-
-                    e.printStackTrace();
+                    //  Glide.with(this).load("http://192.168.43.180/mycollege/data/student/profile/17cs030.png").into(iv_profile_pic);
                 }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getApplicationContext(), " " + "Server error", Toast.LENGTH_SHORT).show();
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("usn", sharedPreferences.getString("usn", "001"));
-                return params;
             }
         };
+        Thread t = new Thread(r);
+        t.start();
 
-        requestQueue.add(stringRequest);
-        swipeRefreshLayout.setRefreshing(false);
-        return;
+
     }
+
+
+    private String bitmapToString(Bitmap bitmap) {
+
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return temp;
+    }
+
+
+    public Bitmap stringToBitMap(String encodedString) {
+
+
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -229,123 +403,5 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            filePath = CropImage.getPickImageResultUri(this, data);
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, filePath)) {
-                uri = filePath;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            } else {
-                startCrop(filePath);
-            }
-
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                uploadBitmap(bitmap);
-
-
-            }
-        }
-    }
-
-    private void startCrop(Uri filePath) {
-        CropImage.activity(filePath).setGuidelines(CropImageView.Guidelines.ON)
-                .setMultiTouchEnabled(true)
-                .start(this);
-    }
-
-
-    private void uploadBitmap(final Bitmap bitmap) {
-
-        final RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final StringRequest request = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "profile/uploadProfilePic.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                requestQueue.getCache().clear();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("title").equals("success")) {
-
-                        stringrequest();
-
-                        return;
-                    } else {
-                        Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        //return;
-
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(getApplicationContext(), " " + "Server error", Toast.LENGTH_SHORT).show();
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("image", getStringImage(bitmap));
-                params.put("usn", usn);
-                return params;
-            }
-        };
-
-        requestQueue.add(request);
-    }
-
-    private String getStringImage(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,10 , byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-
-        return temp;
-    }
-
-
-    private void download_profile_pic() {
-        if (!imgurl.equalsIgnoreCase("null")) {
-            //   Glide.with(this).clear(iv_profile_pic);
-
-            try {
-                Glide.with(this) //1
-                        // .load("http://192.168.43.180/mycollege/data/student/profile/17cs030.png")
-                        .load(getResources().getString(R.string.urlroot) + imgurl)
-                        .error(R.drawable.dronecollege)
-                        .skipMemoryCache(false) //2
-                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                        .into(iv_profile_pic);
-            } catch (Exception e) {
-                Log.i("Error in download", "error " + e.getMessage());
-
-                e.printStackTrace();
-            }
-
-            //  Glide.with(this).load("http://192.168.43.180/mycollege/data/student/profile/17cs030.png").into(iv_profile_pic);
-        }
-
-
-    }
 
 }

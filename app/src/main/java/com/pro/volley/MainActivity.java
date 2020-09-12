@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         return false;
                     case R.id.profile:
-                        Toast.makeText(getApplicationContext(), "profile", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), "profile", Toast.LENGTH_LONG).show();
                         i = new Intent(MainActivity.this, Profile.class);
                         startActivity(i);
                         finish();
