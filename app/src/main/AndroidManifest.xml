@@ -15,6 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
+        <activity android:name=".extra.library.Library"></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.mydomain.fileprovider"
@@ -24,18 +26,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".profile.ProfilePicture"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar.Bridge"
-            >
 
-        </activity>
+        <activity
+            android:name=".profile.ProfilePicture"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar.Bridge"></activity>
         <activity android:name=".Settings" />
         <activity android:name=".profile.Profile" />
-        <activity android:name=".details.timetable.TimeTable"></activity>
-        <activity android:name=".details.events.Events" />
-        <activity android:name=".details.department.Department" />
-        <activity android:name=".details.attendance.Attendance" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".extra.timetable.TimeTable" />
+        <activity android:name=".extra.events.Events" />
+        <activity android:name=".extra.department.Department" />
+        <activity android:name=".extra.attendance.Attendance" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".auth.RegistrationActivity"
             android:noHistory="true" />

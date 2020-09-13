@@ -1,6 +1,4 @@
-package com.pro.volley.details.timetable;
-
-import android.view.View;
+package com.pro.volley.extra.timetable;
 
 public interface ItemClickListener {
     public void onItemClick( int position);

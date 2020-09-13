@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".details.department.Department"
-    android:padding="10dp">
-
-   <include layout="@layout/appbar_layout"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Department"
-        android:textSize="40sp"
-        android:layout_gravity="center"/>
+    tools:context=".extra.library.Library">
 
 </LinearLayout>

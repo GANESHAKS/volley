@@ -1,4 +1,4 @@
-package com.pro.volley.details.timetable;
+package com.pro.volley.extra.timetable;
 
 public class table_data {
     String from;

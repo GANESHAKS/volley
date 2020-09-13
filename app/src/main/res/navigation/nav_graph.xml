@@ -22,7 +22,7 @@
         tools:layout="@layout/layout_classroom" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.pro.volley.details.DetailFragment"
+        android:name="com.pro.volley.extra.DetailFragment"
         android:label="Detail"
         tools:layout="@layout/layout_detail" />
 </navigation>

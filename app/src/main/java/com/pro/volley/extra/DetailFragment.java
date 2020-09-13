@@ -1,4 +1,4 @@
-package com.pro.volley.details;
+package com.pro.volley.extra;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,11 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.pro.volley.R;
-import com.pro.volley.details.attendance.Attendance;
-import com.pro.volley.details.department.Department;
-import com.pro.volley.details.events.Events;
-import com.pro.volley.details.timetable.TimeTable;
+import com.pro.volley.extra.attendance.Attendance;
+import com.pro.volley.extra.department.Department;
+import com.pro.volley.extra.events.Events;
+import com.pro.volley.extra.library.Library;
+import com.pro.volley.extra.timetable.TimeTable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +24,7 @@ import com.pro.volley.details.timetable.TimeTable;
  */
 public class DetailFragment extends Fragment implements View.OnClickListener {
     //declarions
-    CardView cv_dept, cv_event, cv_timetable, cv_attendence;
+    CardView cv_dept, cv_event, cv_timetable, cv_attendence, cv_library;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,8 +81,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         cv_event = view.findViewById(R.id.tv_event);
         cv_timetable = view.findViewById(R.id.tv_timetable);
         cv_attendence = view.findViewById(R.id.tv_attendance);
-
+        cv_library = view.findViewById(R.id.tv_library);
         cv_dept.setOnClickListener(this);
+        cv_library.setOnClickListener(this);
         cv_event.setOnClickListener(this);
         cv_timetable.setOnClickListener(this);
         cv_attendence.setOnClickListener(this);
@@ -109,12 +111,17 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 return;
             case R.id.tv_event:
                 Toast.makeText(getContext(), "event", Toast.LENGTH_SHORT).show();
-                 i= new Intent(getContext(), Events.class);
+                i = new Intent(getContext(), Events.class);
                 startActivity(i);
                 return;
             case R.id.tv_timetable:
                 Toast.makeText(getContext(), "timetable", Toast.LENGTH_SHORT).show();
-                i= new Intent(getContext(), TimeTable.class);
+                i = new Intent(getContext(), TimeTable.class);
+                startActivity(i);
+                return;
+            case R.id.tv_library:
+                Toast.makeText(getContext(), "Library", Toast.LENGTH_SHORT).show();
+                i = new Intent(getContext(), Library.class);
                 startActivity(i);
                 return;
 
