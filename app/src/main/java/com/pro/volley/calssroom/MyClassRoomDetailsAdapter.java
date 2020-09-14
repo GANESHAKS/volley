@@ -1,6 +1,7 @@
 package com.pro.volley.calssroom;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +10,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pro.volley.R;
-import com.pro.volley.extra.timetable.Adapter2_table;
-import com.pro.volley.extra.timetable.table_data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomDetailsAdapter.ViewHolder> {
-    private  Context context;
+    private Context context;
+    AlertDialog.Builder builder;
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
 
@@ -40,13 +41,44 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-         Classroom myListData = classrooms.get(position);
+        final Classroom myListData = classrooms.get(position);
         holder.tv_title.setText(myListData.title);
         holder.tv_code.setText(myListData.code);
+        builder = new AlertDialog.Builder(context);
+        //builder.setTitle("Unernroll from "+myListData.title);
+
         holder.materialCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(v.getContext(),"long click item: to enroll class alert dialog with two options ",Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "long click item: to enroll class alert dialog with two options ", Toast.LENGTH_LONG).show();
+
+
+                //Setting message manually and performing action on button click
+                builder.setMessage("You'll be no longer be able to see the class or participate in it.. ")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                Toast.makeText(context, "you choose yes action for alertbox",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+
+                                Toast.makeText(context, "you choose no action for alertbox",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Unenroll from "+myListData.title+" ? ");
+                alert.show();
+
+
                 return true;
             }
         });
