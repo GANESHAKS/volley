@@ -1,13 +1,15 @@
 package com.pro.volley.calssroom;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 
 /**
@@ -16,7 +18,7 @@ import com.pro.volley.R;
  * create an instance of this fragment.
  */
 public class ClassroomFragment extends Fragment {
-
+    FloatingActionButton fab_classroom;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,6 +63,21 @@ public class ClassroomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_classroom, container, false);
+        final View view = inflater.inflate(R.layout.layout_classroom, container, false);
+        fab_classroom=view.findViewById(R.id.fab_join_class);
+        fab_classroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab_classroom_clicked();
+            }
+        });
+
+        return view;
+    }
+
+    private void fab_classroom_clicked() {
+        //join class
+        Intent i=new Intent(getContext(),JoinClassRoom.class);
+        startActivity(i);
     }
 }

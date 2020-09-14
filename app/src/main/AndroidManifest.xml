@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".extra.library.Library"></activity>
+        <activity android:name=".calssroom.JoinClassRoom"></activity>
+        <activity android:name=".extra.library.Library" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -29,7 +30,7 @@
 
         <activity
             android:name=".profile.ProfilePicture"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar.Bridge"></activity>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar.Bridge" />
         <activity android:name=".Settings" />
         <activity android:name=".profile.Profile" />
         <activity android:name=".extra.timetable.TimeTable" />

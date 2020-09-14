@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 
@@ -29,7 +30,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private SharedPreferences sharedPreferences;
     Button bt_login;
     EditText et_email, et_pass;
-
+    MaterialCheckBox cb_login_as_faculty;
     String e = "ganeshks439@gmail.com", p = "12345";
     boolean bool = false;
 
@@ -39,6 +40,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.layout_login);
         sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
         bt_login = findViewById(R.id.bt_login);
+        cb_login_as_faculty = findViewById(R.id.cb_login_as_faculty);
         et_email = findViewById(R.id.et_email_login);
         et_pass = findViewById(R.id.et_pass_login);
         bt_login.setOnClickListener(this);
@@ -59,8 +61,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             case R.id.bt_login:
                 //  e = et_email.getText().toString();
                 //p = et_pass.getText().toString();
-                login();
+                if (cb_login_as_faculty.isChecked()) {
+                    Toast.makeText(getApplicationContext(),"not developed",Toast.LENGTH_SHORT).show();
 
+                } else {
+                    login_as_student();
+                }
 
                 return;
             case R.id.tv_reg_login:
@@ -74,7 +80,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
 
-    public void login() {
+    public void login_as_student() {
 
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -121,6 +127,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", e);
                 params.put("password", p);
+                params.put("usertype","student");
                 return params;
             }
         };

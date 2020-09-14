@@ -1,13 +1,13 @@
 package com.pro.volley.feed;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pro.volley.R;
 
 /**
@@ -16,6 +16,8 @@ import com.pro.volley.R;
  * create an instance of this fragment.
  */
 public class FeedFragment extends Fragment {
+    FloatingActionButton fab_new_feed;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +63,19 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_feed, container, false);
+        final View view = inflater.inflate(R.layout.layout_feed, container, false);
+
+        fab_new_feed =view.findViewById(R.id.fab_add_feed);
+        fab_new_feed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab_new_feed_clicked();
+            }
+        });
+        
+        return view;
+    }
+
+    private void fab_new_feed_clicked() {
     }
 }

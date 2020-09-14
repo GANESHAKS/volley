@@ -54,6 +54,14 @@
 
 
                 />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:text="login as faculty"
+                android:id="@+id/cb_login_as_faculty"
+                />
 
             <Button
                 android:id="@+id/bt_login"
