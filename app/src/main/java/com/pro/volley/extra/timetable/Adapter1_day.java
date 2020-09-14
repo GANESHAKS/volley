@@ -1,6 +1,7 @@
 package com.pro.volley.extra.timetable;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 
 import java.util.List;
@@ -42,13 +44,14 @@ public class Adapter1_day extends RecyclerView.Adapter<Adapter1_day.ViewHolder> 
 
     public class ViewHolder extends  RecyclerView.ViewHolder  {
         TextView tv_head;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             tv_head=itemView.findViewById(R.id.tv_row_timetable_days);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     clickListener.onItemClick(getAdapterPosition());
+
                 }
             });
 

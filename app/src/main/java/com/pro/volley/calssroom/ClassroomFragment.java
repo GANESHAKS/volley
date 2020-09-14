@@ -1,5 +1,6 @@
 package com.pro.volley.calssroom;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pro.volley.MainActivity;
 import com.pro.volley.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,9 @@ import com.pro.volley.R;
  */
 public class ClassroomFragment extends Fragment {
     FloatingActionButton fab_classroom;
+    RecyclerView recyclerView;
+    List<Classroom> list;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,7 +72,7 @@ public class ClassroomFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.layout_classroom, container, false);
-
+        recyclerView = view.findViewById(R.id.rv_classroom);
 
         fab_classroom=view.findViewById(R.id.fab_join_class);
         fab_classroom.setOnClickListener(new View.OnClickListener() {
@@ -73,13 +81,28 @@ public class ClassroomFragment extends Fragment {
                 fab_classroom_clicked();
             }
         });
+        load_recyclerView(view.getContext());
 
         return view;
     }
 
+    private void load_recyclerView(Context context) {
+
+        Classroom c = new Classroom("1st class", "A");
+        Classroom c1 = new Classroom("2st class", "b");
+        list = new ArrayList<Classroom>();
+        list.add(c);
+        list.add(c1);
+        MyClassRoomDetailsAdapter adapter = new MyClassRoomDetailsAdapter(list, context);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
+
+    }
+
     private void fab_classroom_clicked() {
         //join class
-        Intent i=new Intent(getContext(),JoinClassRoom.class);
+        Intent i = new Intent(getContext(), JoinClassRoom.class);
         startActivity(i);
     }
 }

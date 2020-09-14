@@ -33,7 +33,7 @@ public class Adapter2_table extends RecyclerView.Adapter<Adapter2_table.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-table_data tb=listItems.get(position);
+        table_data tb=listItems.get(position);
         holder.tv_from.setText(tb.from);
         holder.tv_to.setText(tb.to);
         holder.tv_sub.setText(tb.subject);

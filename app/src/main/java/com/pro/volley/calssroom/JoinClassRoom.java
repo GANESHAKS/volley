@@ -56,7 +56,7 @@ public class JoinClassRoom extends Activity {
         progressDialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                getResources().getString(R.string.urlroot) + "/mycollege/classroom/student/joinClassStudent.php",
+                getResources().getString(R.string.urlroot) + "/mycollege/Classroom/student/joinClassStudent.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
