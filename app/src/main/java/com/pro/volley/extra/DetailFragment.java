@@ -75,7 +75,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.layout_detail, container, false);
+        final View view = inflater.inflate(R.layout.layout_extra, container, false);
 
         cv_dept = view.findViewById(R.id.tv_dept);
         cv_event = view.findViewById(R.id.tv_event);

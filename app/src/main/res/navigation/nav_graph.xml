@@ -24,5 +24,5 @@
         android:id="@+id/detailFragment"
         android:name="com.pro.volley.extra.DetailFragment"
         android:label="Detail"
-        tools:layout="@layout/layout_detail" />
+        tools:layout="@layout/layout_extra" />
 </navigation>

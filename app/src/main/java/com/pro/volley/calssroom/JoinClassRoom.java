@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,11 +42,13 @@ public class JoinClassRoom extends Activity {
 
                 if (!et_class_code.getText().toString().equals(""))
                     join_class_room(et_class_code.getText().toString());
+
             }
         });
     }
 
     public void join_class_room(final String classcode) {
+        Log.i("Entered here  dsfsdf :","entrweddasda sdasdahsfadsjfdsjfhjsdfhsahdfhasdhfhasdhfhsadf");
 
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -53,20 +56,22 @@ public class JoinClassRoom extends Activity {
         progressDialog.show();
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                getResources().getString(R.string.urlroot) + "/mycollege/classroom/student/joinclassroomstudent.php",
+                getResources().getString(R.string.urlroot) + "/mycollege/classroom/student/joinClassStudent.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         requestQueue.getCache().clear();
+                        Log.i("Response :",response);
+
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("title").equals("success")) {
-                                Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),  jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
 
                                 // return;
                             } else {
-                                Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                 //return;
 
                             }

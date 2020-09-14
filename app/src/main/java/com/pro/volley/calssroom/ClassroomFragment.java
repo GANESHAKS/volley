@@ -64,6 +64,8 @@ public class ClassroomFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.layout_classroom, container, false);
+
+
         fab_classroom=view.findViewById(R.id.fab_join_class);
         fab_classroom.setOnClickListener(new View.OnClickListener() {
             @Override
