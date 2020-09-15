@@ -83,52 +83,13 @@ public class ClassroomFragment extends Fragment {
                 fab_classroom_clicked();
             }
         });
-
+        update_user_interface();
         load_recyclerView(getContext());
         swiped();
 
 
     }
 
-//    private void download_content_from_server_first_time(Context context1) {
-//        Log.i("first time","first time");
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-//                context1.getResources().getString(R.string.urlclassstudent) +
-//                        "/returnJoinedClass.php", new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                downloaded_response = response;
-//                // Log.i("got Response", response);
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.i("got error", "no response" + error.getMessage());
-//                Toast.makeText(context, "connection failed", Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("usn", sharedPreferences.getString("usn", "17cs030"));
-//                return params;
-//            }
-//
-//        };
-//
-//        int socketTimeOut = 5000;
-//        RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 30, DefaultRetryPolicy.DEFAULT_MAX_RETRIES);
-//        stringRequest.setRetryPolicy(policy);
-//        RequestQueue queue = Volley.newRequestQueue(context1);
-//        queue.add(stringRequest);
-//
-//
-//
-//
-//
-//    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -218,6 +179,7 @@ public class ClassroomFragment extends Fragment {
         //join class
         Intent i = new Intent(getContext(), JoinClassRoom.class);
         startActivity(i);
+
     }
 
     private class AsyncTaskExample extends AsyncTask<String, String, String> {
@@ -248,14 +210,20 @@ public class ClassroomFragment extends Fragment {
 
                     try {
                         JSONObject jsonObject = new JSONObject(downloaded_response);
-                        Log.i("onPostExecute", " executed" + downloaded_response);
+                       // Log.i("doin back", " executed" + downloaded_response);
                         if (jsonObject.optString("title").equalsIgnoreCase("success")) {
                             sharedPreferences_classroom.edit().putString("saved_classrooms_data_array", jsonObject.optString("message")).apply();
                             update_user_interface();
 
-                        }
+                        }else
+                            if (jsonObject.optString("title").equalsIgnoreCase("unsuccess")){
+                           //     sharedPreferences_classroom.edit().putString("saved_classrooms_data_array","null").apply();
+                                sharedPreferences_classroom.edit().remove("saved_classrooms_data_array").apply();
+                                update_user_interface();
+
+                            }
                     } catch (Exception e) {
-                        Log.i("Got excespptoion in onpostexecute", "onPost Exe" + e.getMessage());
+                        Log.i("Got excespptoion in doinback", "doin background Exe" + e.getMessage());
 
                     }
 
@@ -293,22 +261,8 @@ public class ClassroomFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
 
 
-            Log.i("onPostExecute b4 if ", " executed" + downloaded_response);
-            if (!downloaded_response.equalsIgnoreCase("null")) {
-//                try {
-//                    JSONObject jsonObject = new JSONObject(downloaded_response);
-//                    Log.i("onPostExecute", " executed" + downloaded_response);
-//                    if (jsonObject.optString("title").equalsIgnoreCase("success")) {
-//                        sharedPreferences_classroom.edit().putString("saved_classrooms_data_array", jsonObject.optString("message")).apply();
-//                        update_user_interface();
-//
-//                    }
-//                } catch (Exception e) {
-//                    Log.i("Got excespptoion in onpostexecute", "onPost Exe" + e.getMessage());
-//
-//                }
-            }
 
         }
+
     }
 }

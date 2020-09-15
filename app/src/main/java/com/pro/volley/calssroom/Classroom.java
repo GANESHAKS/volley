@@ -19,7 +19,7 @@ public class Classroom {
 
     String title;
 
-    public Classroom(String title, String code) {
+    public Classroom(String code,String title ) {
         this.title = title;
         this.code = code;
     }

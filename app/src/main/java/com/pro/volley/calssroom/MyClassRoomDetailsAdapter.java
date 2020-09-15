@@ -31,30 +31,32 @@ import java.util.List;
 import java.util.Map;
 
 public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomDetailsAdapter.ViewHolder> {
-    private Context context;
     AlertDialog.Builder builder;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, sharedPreferences_classroom;
+    Classroom myListData;
+    private Context context;
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
 
     public MyClassRoomDetailsAdapter(List<Classroom> classrooms, Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
+        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
         this.classrooms = classrooms;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_classroom_class_title,parent,false);
-        return  new MyClassRoomDetailsAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_classroom_class_title, parent, false);
+        return new MyClassRoomDetailsAdapter.ViewHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        final Classroom myListData = classrooms.get(position);
+         myListData = classrooms.get(position);
         holder.tv_title.setText(myListData.title);
         holder.tv_code.setText(myListData.code);
         builder = new AlertDialog.Builder(context);
@@ -97,10 +99,15 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             }
 
             private void unenroll_from_class() {
+                Log.i("asdasdasdasd","dasdashasjbdasbdbashdasdsdjasbdasjd    "+myListData.code);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, context.getResources().getString(R.string.urlclassstudent) + "/unEnRollStudent.php", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.i(" unenroll", response);
+                        if (sharedPreferences_classroom.contains("saved_classrooms_data_array")){
+                            sharedPreferences_classroom.edit().clear().apply();
+
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -114,7 +121,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("usn", sharedPreferences.getString("usn", "001"));
-                        params.put("classcode", myListData.code);
+                        params.put("classcode",myListData.code);
                         return params;
                     }
 
@@ -130,10 +137,9 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: ",Toast.LENGTH_LONG).show();
-                Intent i=new Intent(view.getContext(),Individual_Class.class);
+                Toast.makeText(view.getContext(), "click on item: ", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(view.getContext(), Individual_Class.class);
                 context.startActivity(i);
-
 
 
             }
