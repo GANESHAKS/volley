@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:padding="5dp"
     tools:context=".calssroom.Individual_Class">
 
     <include layout="@layout/appbar_layout" />
@@ -11,22 +13,51 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tab_classroom">
+        android:id="@+id/tab_classroom"
+        android:layout_below="@+id/toolbar"
+
+        >
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
+            android:id="@+id/individual_class_stream"
             android:layout_height="match_parent"
             android:text="stream" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/individual_Class_ClassWork"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Classwork" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/individual_Class_People"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="people" />
     </com.google.android.material.tabs.TabLayout>
 
-</LinearLayout>
+    <fragment
+        android:id="@+id/nav_host_fragment_classroom"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        android:layout_below="@+id/tab_classroom"
+
+        android:layout_alignParentStart="true"
+
+
+        android:layout_alignParentEnd="true"
+
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="0dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_individual_classroom" />
+<!--
+        -->
+    />
+</RelativeLayout>

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_top);
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationview);
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 

@@ -31,7 +31,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 import com.pro.volley.SharedPreferencesHelper;
 
@@ -57,12 +56,18 @@ public class Profile extends AppCompatActivity {
     Handler handler1, handler2, handler3, handler4;
     String downloaded_response = "null";
     Bitmap dp;
+    String from_this_activity_called;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_profile);
+
+        if(getIntent().hasExtra("from_this_activity_called")){
+
+            from_this_activity_called = getIntent().getStringExtra("from_this_activity_called");
+        }
         // sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
         //sharedPreferences_profile = this.getSharedPreferences("com.pro.volley.ProfileSharedPreference", MODE_PRIVATE);
         sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext(), "com.pro.volley");
@@ -411,10 +416,12 @@ public class Profile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+//        Intent i = new Intent(Profile.this, MainActivity.class);
+//        startActivity(i);
+//
+  //if (from_this_activity_called.equalsIgnoreCase("from_this_activity_called"))
+    //    finish();
         super.onBackPressed();
-        Intent i = new Intent(Profile.this, MainActivity.class);
-        startActivity(i);
-        finish();
 
     }
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_individual_classroom.xml"
+    app:startDestination="@id/individual_class_stream">
+
+    <fragment
+        android:id="@+id/individual_class_stream"
+        android:name="com.pro.volley.calssroom.Individual_Class_Fragments.Individual_class_stream"
+        android:label="fragment_individual_class_stream"
+        tools:layout="@layout/fragment_individual_class_stream" >
+        <action
+            android:id="@+id/action_individual_class_stream_to_individual_Class_People2"
+            app:destination="@id/individual_Class_People" />
+        <action
+            android:id="@+id/action_individual_class_stream_to_individual_Class_ClassWork"
+            app:destination="@id/individual_Class_ClassWork" />
+    </fragment>
+    <fragment
+        android:id="@+id/individual_Class_ClassWork"
+        android:name="com.pro.volley.calssroom.Individual_Class_Fragments.Individual_Class_ClassWork"
+        android:label="fragment_individual__class__class_work"
+        tools:layout="@layout/fragment_individual__class__class_work" />
+    <fragment
+        android:id="@+id/individual_Class_People"
+        android:name="com.pro.volley.calssroom.Individual_Class_Fragments.Individual_Class_People"
+        android:label="fragment_individual__class__people"
+        tools:layout="@layout/fragment_individual__class__people" />
+</navigation>

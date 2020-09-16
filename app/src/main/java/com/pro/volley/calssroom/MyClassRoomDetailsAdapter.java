@@ -3,8 +3,6 @@ package com.pro.volley.calssroom;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +34,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomDetailsAdapter.ViewHolder> {
     AlertDialog.Builder builder;
@@ -44,7 +43,6 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
     SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
     Classroom myListData;
     private Context context;
-    String string_colors[] = {"#544a7d", "#afd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
 
@@ -70,12 +68,12 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         myListData = classrooms.get(position);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, new int[]{Color.parseColor(string_colors[position % string_colors.length]), Color.parseColor(string_colors[(position + 1) % string_colors.length])});
-      gd.setCornerRadius((float) 20.0);
-      gd.setPadding(10,10,10,10);
-      gd.setStroke(5,Color.parseColor(string_colors[(position+1)%string_colors.length]));
-        holder.materialCardView.setBackground(gd);
+//        GradientDrawable gd = new GradientDrawable(
+//                GradientDrawable.Orientation.LEFT_RIGHT, new int[]{Color.parseColor(string_colors[position % string_colors.length]), Color.parseColor(string_colors[(position + 1) % string_colors.length])});
+//      gd.setCornerRadius((float) 20.0);
+//      gd.setPadding(10,10,10,10);
+//      gd.setStroke(5,Color.parseColor(string_colors[(position+1)%string_colors.length]));
+//        holder.materialCardView.setBackground(gd);
         holder.tv_title.setText(myListData.title);
         holder.tv_code.setText(myListData.code);
         builder = new AlertDialog.Builder(context);
@@ -157,7 +155,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                         Map<String, String> params = new HashMap<String, String>();
                         //params.put("usn", sharedPreferences.getString("usn", "001"));
                         params.put("usn", sharedPreferencesHelper.getUsn());
-                        params.put("classcode", myListData.code);
+                        params.put("classcode", holder.tv_code.getText().toString());
                         return params;
                     }
 
@@ -174,8 +172,11 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "click on item: ", Toast.LENGTH_LONG).show();
+                Log.i("MYCLAASSROOM ADAPTER   :","dasdsadsada        code is "+myListData.code);
                 Intent i = new Intent(view.getContext(), Individual_Class.class);
+                i.putExtra("CLASS_CODE",holder.tv_code.getText().toString().trim());
                 context.startActivity(i);
+
 
 
             }
@@ -190,6 +191,8 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_title, tv_code;
+        String string_colors[] = {"#544a7d", "#afd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
+
         public MaterialCardView materialCardView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -197,6 +200,16 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             this.tv_code = itemView.findViewById(R.id.tv_classroom_row_code);
             this.tv_title = itemView.findViewById(R.id.tv_classroom_row_title);
             this.materialCardView = itemView.findViewById(R.id.materialCardView_classroom);
+            Random r=new Random();
+            int i;
+//            GradientDrawable gd = new GradientDrawable(
+//                    GradientDrawable.Orientation.LEFT_RIGHT, new int[]{i=Color.parseColor(this.string_colors[r.nextInt(20)%this.string_colors.length]), Color.parseColor(this.string_colors[r.nextInt(20)%this.string_colors.length])});
+//            gd.setCornerRadius((float) 20.0);
+//   //         gd.setPadding(10,10,10,10);
+//            gd.setStroke(5,i);
+//            this.materialCardView.setBackground(gd);
+
+
         }
     }
 

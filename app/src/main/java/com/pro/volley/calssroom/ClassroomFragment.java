@@ -3,6 +3,7 @@ package com.pro.volley.calssroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,6 +28,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pro.volley.R;
 import com.pro.volley.SharedPreferencesHelper;
@@ -51,6 +54,7 @@ public class ClassroomFragment extends Fragment {
     List<Classroom> list;
     String downloaded_response = "null";
     Context context;
+    MaterialToolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedPreferences, sharedPreferences_classroom;
     SharedPreferencesHelper sharedPreferencesHelper;
@@ -120,7 +124,7 @@ public class ClassroomFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_classroom);
         swipeRefreshLayout = view.findViewById(R.id.sr_classroom);
         fab_classroom = view.findViewById(R.id.fab_join_class);
-        context = view.getContext();
+ context = view.getContext();
         update_user_interface();
         return view;
     }
@@ -187,7 +191,18 @@ public class ClassroomFragment extends Fragment {
             }
 
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //if (list.size()>1){
+            recyclerView.setLayoutManager(new GridLayoutManager(context,2));
+            // In landscape
+              //  }else {
+                //recyclerView.setLayoutManager(new LinearLayoutManager(context));
+           // }
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            // In portrait
+        }
         adapter = new MyClassRoomDetailsAdapter(list, context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);

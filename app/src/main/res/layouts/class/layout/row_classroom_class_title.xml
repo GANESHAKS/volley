@@ -2,8 +2,9 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="4dp"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
+
+    android:elevation="2dp"
     android:longClickable="true"
     android:id="@+id/materialCardView_classroom"
     android:clickable="true"
