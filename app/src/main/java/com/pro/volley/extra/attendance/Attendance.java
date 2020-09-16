@@ -1,11 +1,11 @@
 package com.pro.volley.extra.attendance;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pro.volley.R;
@@ -31,7 +31,7 @@ public class Attendance extends AppCompatActivity {
                         finish();
                         return false;
                     case R.id.profile:
-                        Toast.makeText(getApplicationContext(),"profile",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"ProfileSharedPreference",Toast.LENGTH_LONG).show();
                          i=new Intent(Attendance.this, Profile.class);
                         startActivity(i);
                         finish();

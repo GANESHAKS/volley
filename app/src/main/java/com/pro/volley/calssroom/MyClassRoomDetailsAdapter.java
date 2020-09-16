@@ -44,7 +44,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
     SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
     Classroom myListData;
     private Context context;
-    String string_colors[] = {"#544a7d", "#ffd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
+    String string_colors[] = {"#544a7d", "#afd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
 
@@ -73,8 +73,9 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT, new int[]{Color.parseColor(string_colors[position % string_colors.length]), Color.parseColor(string_colors[(position + 1) % string_colors.length])});
       gd.setCornerRadius((float) 20.0);
-      //gd.setPadding(10,10,10,10);
-        //holder.materialCardView.setBackground(gd);
+      gd.setPadding(10,10,10,10);
+      gd.setStroke(5,Color.parseColor(string_colors[(position+1)%string_colors.length]));
+        holder.materialCardView.setBackground(gd);
         holder.tv_title.setText(myListData.title);
         holder.tv_code.setText(myListData.code);
         builder = new AlertDialog.Builder(context);

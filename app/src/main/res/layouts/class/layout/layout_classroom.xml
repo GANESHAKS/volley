@@ -20,7 +20,7 @@
         android:layout_margin="20dp"
         android:clickable="true"
         android:elevation="4dp"
-        android:src="@drawable/ic_new_fab"
+android:background="@drawable/ic_new_fab"
         app:fabSize="normal" />
 
 

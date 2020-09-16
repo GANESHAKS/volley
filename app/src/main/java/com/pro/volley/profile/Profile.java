@@ -1,9 +1,6 @@
 package com.pro.volley.profile;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,20 +34,19 @@ import com.bumptech.glide.request.transition.Transition;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
 import com.pro.volley.SharedPreferencesHelper;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class Profile extends AppCompatActivity {
     TextView tv_name, tv_usn, tv_email, tv_phno, tv_sem, tv_dept, tv_sec;
-    SharedPreferences sharedPreferences, sharedPreferences_profile;
+    //SharedPreferences sharedPreferences, sharedPreferences_profile;
+    SharedPreferencesHelper sharedPreferencesHelper;
+    SharedPreferencesHelper.ProfileSharedPreference sharedPreference_profile;
     SwipeRefreshLayout swipeRefreshLayout;
     String usn, name, email, phno, sem, sec, dept;
     static String imgurl = "null", imagedata = "null";
@@ -61,7 +54,7 @@ public class Profile extends AppCompatActivity {
     private Uri filePath, uri;
     Bitmap image;
     private static int SELECT_PHOTO = 1;
-    Handler handler1, handler2, handler3,handler4;
+    Handler handler1, handler2, handler3, handler4;
     String downloaded_response = "null";
     Bitmap dp;
 
@@ -70,10 +63,12 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_profile);
-       // sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
-        //sharedPreferences_profile = this.getSharedPreferences("com.pro.volley.profile", MODE_PRIVATE);
-        SharedPreferencesHelper sharedPreferencesHelper=new SharedPreferencesHelper(getApplicationContext(),"com.pro.volley");
-        SharedPreferencesHelper.profile sp=  sharedPreferencesHelper.new profile(getApplicationContext());
+        // sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
+        //sharedPreferences_profile = this.getSharedPreferences("com.pro.volley.ProfileSharedPreference", MODE_PRIVATE);
+        sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext(), "com.pro.volley");
+
+        sharedPreference_profile = sharedPreferencesHelper.new ProfileSharedPreference(getApplicationContext());
+
 
         iv_profile_pic = findViewById(R.id.iv_profile_pic);
         swipeRefreshLayout = findViewById(R.id.sr_profile);
@@ -101,7 +96,7 @@ public class Profile extends AppCompatActivity {
         });
 
 
-        if (sharedPreferences_profile.contains("usn")) {
+        if (!sharedPreference_profile.getProfile_usn().equalsIgnoreCase("null")) {
             // Toast.makeText(getApplicationContext(),imagedata,Toast.LENGTH_SHORT).show();
 
 
@@ -132,7 +127,7 @@ public class Profile extends AppCompatActivity {
                             phno = jsonObject.optString("phno");
                             imgurl = jsonObject.optString("pic");
 
-                            Log.i("profile pic:", downloaded_response);
+                            Log.i("ProfileSharedPreference pic:", downloaded_response);
                             saveDataInPreference();
 
                             updateUserInterface();
@@ -220,7 +215,7 @@ public class Profile extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("usn", sharedPreferences.getString("usn", "001"));
+                        params.put("usn", sharedPreferencesHelper.getUsn());
                         return params;
                     }
 
@@ -252,21 +247,25 @@ public class Profile extends AppCompatActivity {
     }
 
     private void saveDataInPreference() {
-        sharedPreferences_profile.edit().putString("name", name).apply();
-        sharedPreferences_profile.edit().putString("usn", usn).apply();
-        sharedPreferences_profile.edit().putString("email", email).apply();
-        sharedPreferences_profile.edit().putString("phno", phno).apply();
-        sharedPreferences_profile.edit().putString("dept", dept).apply();
-        sharedPreferences_profile.edit().putString("sem", sem).apply();
-        sharedPreferences_profile.edit().putString("sec", sec).apply();
-        sharedPreferences_profile.edit().putString("pic", imgurl).apply();
+        sharedPreference_profile.setProfile_name(name);
+
+        sharedPreference_profile.setProfile_usn(usn);
+        sharedPreference_profile.setProfile_email(email);
+        sharedPreference_profile.setProfile_phno(phno);
+        sharedPreference_profile.setProfile_dept(dept);
+
+        sharedPreference_profile.setProfile_sem(sem);
+
+        sharedPreference_profile.setProfile_sec(sec);
+
+        sharedPreference_profile.setProfile_picURL(imgurl);
         // sharedPreferences_profile.edit().putString("imagedata", imagedata).apply();
 
 
     }
 
     private void updateUserInterface() {
-        imagedata = sharedPreferences_profile.getString("imagedata", "null");
+        imagedata = sharedPreference_profile.getGetProfile_imagedata();
         if (!imagedata.equalsIgnoreCase("null")) {
 
 
@@ -277,27 +276,24 @@ public class Profile extends AppCompatActivity {
                     if (!imagedata.equalsIgnoreCase("null")) {
                         image = stringToBitMap(imagedata);
 
-                        //update profile pic
+                        //update ProfileSharedPreference pic
                     }
 
                     handler4.sendEmptyMessage(0);
                 }
 
             };
-            Thread t=new Thread(r);
+            Thread t = new Thread(r);
             t.start();
 
-            name = sharedPreferences_profile.getString("name", "");
-            usn = sharedPreferences_profile.getString("usn", "");
-            email = sharedPreferences_profile.getString("email", "");
-            phno = sharedPreferences_profile.getString("phno", "");
-            dept = sharedPreferences_profile.getString("dept", "");
-            sem = sharedPreferences_profile.getString("sem", "");
-            sec = sharedPreferences_profile.getString("sec", "");
-            imgurl = sharedPreferences_profile.getString("pic", "");
-
-
-
+            name = sharedPreference_profile.getProfile_name();
+            usn = sharedPreference_profile.getProfile_usn();
+            email = sharedPreference_profile.getProfile_email();
+            phno = sharedPreference_profile.getProfile_phno();
+            dept = sharedPreference_profile.getProfile_dept();
+            sem = sharedPreference_profile.getProfile_sem();
+            sec = sharedPreference_profile.getProfile_sec();
+            imgurl = sharedPreference_profile.getProfile_picURL();
 
 
         } else {
@@ -341,7 +337,8 @@ public class Profile extends AppCompatActivity {
                                         // BitMapToString(bitmap);
                                         //  iv_profile_pic.setImageBitmap(dp);
                                         imagedata = bitmapToString(dp);
-                                        sharedPreferences_profile.edit().putString("imagedata", imagedata).apply();
+                                        sharedPreference_profile.setGetProfile_imagedata(imagedata);
+                                     //   sharedPreferences_profile.edit().putString("imagedata", imagedata).apply();
 
                                         handler3.sendEmptyMessage(0);
 

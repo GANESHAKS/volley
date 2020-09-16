@@ -6,9 +6,16 @@ import android.content.SharedPreferences;
 public class SharedPreferencesHelper {
     private SharedPreferences sharedPreferences;
     private Context context;
-   private ClassroomSharedPreference classroomSharedPreference;
-    public  ClassroomSharedPreference getclassroomSharedPreference(){
-        return  new ClassroomSharedPreference(context);
+    private ClassroomSharedPreference classroomSharedPreference;
+    private ProfileSharedPreference profileSharedPreference;
+
+
+    public ProfileSharedPreference getProfileSharedPreference() {
+        return new ProfileSharedPreference(context);
+    }
+
+    public ClassroomSharedPreference getclassroomSharedPreference() {
+        return new ClassroomSharedPreference(context);
     }
 
     public SharedPreferencesHelper(Context context, String activity_name) {
@@ -16,9 +23,9 @@ public class SharedPreferencesHelper {
         this.context = context;
     }
 
-    public SharedPreferencesHelper() {
+   /* public SharedPreferencesHelper() {
 
-    }
+    }*/
 
     //for login
     String email = "null";
@@ -70,14 +77,15 @@ public class SharedPreferencesHelper {
     }
 
 
-    public class profile {
+    public class ProfileSharedPreference {
         SharedPreferences sharedPreferences;
         Context profile_context;
         String profile_usn = "null";
         String profile_name = "null", profile_email = "null", profile_phno = "null", profile_dept = "null", profile_sem = "null", profile_sec = "null", profile_picURL = "null", getProfile_imagedata = "null";
 
-        public profile(Context context) {
+        public ProfileSharedPreference(Context context) {
             profile_context = context;
+            sharedPreferences = context.getSharedPreferences("com.pro.volley.profile", Context.MODE_PRIVATE);
 
         }
 
@@ -94,68 +102,68 @@ public class SharedPreferencesHelper {
 
 
         public String getProfile_name() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("name", "null");
         }
 
         public void setProfile_name(String profile_name) {
-            this.profile_name = profile_name;
+            sharedPreferences.edit().putString("name", profile_name).apply();
         }
 
         public String getProfile_email() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("email", "null");
         }
 
         public void setProfile_email(String profile_email) {
-            this.profile_email = profile_email;
+            sharedPreferences.edit().putString("email", profile_email).apply();
         }
 
         public String getProfile_phno() {
 
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("phno", "null");
         }
 
         public void setProfile_phno(String profile_phno) {
-            this.profile_phno = profile_phno;
+            sharedPreferences.edit().putString("phno", profile_phno).apply();
         }
 
         public String getProfile_dept() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("dept", "null");
         }
 
         public void setProfile_dept(String profile_dept) {
-            this.profile_dept = profile_dept;
+            sharedPreferences.edit().putString("dept", profile_dept).apply();
         }
 
         public String getProfile_sem() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("sem", "null");
         }
 
         public void setProfile_sem(String profile_sem) {
-            this.profile_sem = profile_sem;
+            sharedPreferences.edit().putString("sem", profile_sem).apply();
         }
 
         public String getProfile_sec() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("sem", "null");
         }
 
         public void setProfile_sec(String profile_sec) {
-            this.profile_sec = profile_sec;
+            sharedPreferences.edit().putString("sec", profile_sec).apply();
         }
 
         public String getProfile_picURL() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("picurl", "null");
         }
 
         public void setProfile_picURL(String profile_picURL) {
-            this.profile_picURL = profile_picURL;
+            sharedPreferences.edit().putString("picurl", profile_picURL).apply();
         }
 
         public String getGetProfile_imagedata() {
-            return sharedPreferences.getString("usn", "null");
+            return sharedPreferences.getString("imagedata", "null");
         }
 
         public void setGetProfile_imagedata(String getProfile_imagedata) {
-            this.getProfile_imagedata = getProfile_imagedata;
+            sharedPreferences.edit().putString("imagedata", getProfile_imagedata).apply();
         }
 
 

@@ -82,7 +82,7 @@ toolbar.inflateMenu(R.menu.menu_top_timetable);
                         finish();
                         return false;
                     case R.id.profile:
-                        Toast.makeText(getApplicationContext(), "profile", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "ProfileSharedPreference", Toast.LENGTH_LONG).show();
                         i = new Intent(TimeTable.this, Profile.class);
                         startActivity(i);
                         finish();

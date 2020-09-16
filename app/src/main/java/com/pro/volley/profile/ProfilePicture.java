@@ -3,7 +3,6 @@ package com.pro.volley.profile;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -34,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pro.volley.R;
+import com.pro.volley.SharedPreferencesHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,7 +49,9 @@ import java.util.Map;
 public class ProfilePicture extends AppCompatActivity {
 
     ImageView iv_profile;
-    SharedPreferences sharedPreferences;
+    //SharedPreferences sharedPreferences;
+    SharedPreferencesHelper sharedPreferencesHelper;
+    SharedPreferencesHelper.ProfileSharedPreference profileSharedPreference;
     Bitmap profilepic, dp;
     String imagedata;
     private Uri filePath, uri, u;
@@ -68,8 +70,9 @@ public class ProfilePicture extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_profile_picture);
         iv_profile = findViewById(R.id.iv_profilepicture_image);
-        sharedPreferences = this.getSharedPreferences("com.pro.volley.profile", MODE_PRIVATE);
-
+        // sharedPreferences = this.getSharedPreferences("com.pro.volley.ProfileSharedPreference", MODE_PRIVATE);
+        sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext(), "com.pro.volley");
+        profileSharedPreference = sharedPreferencesHelper.getProfileSharedPreference();
 //Intent i=getIntent();
 //final String imagedata=i.getExtras().getString("imagedata");
 //Toast.makeText(getApplicationContext(),imagedata,Toast.LENGTH_SHORT).show();
@@ -80,21 +83,23 @@ public class ProfilePicture extends AppCompatActivity {
             public void handleMessage(@NonNull Message msg) {
                 iv_profile.setImageBitmap(dp);
 
-                sharedPreferences.edit().putString("imagedata", bitmapToString(dp)).apply();
+                // sharedPreferences.edit().putString("imagedata", bitmapToString(dp)).apply();
+                profileSharedPreference.setGetProfile_imagedata(bitmapToString(dp));
 
 
             }
         };
+        String s=profileSharedPreference.getGetProfile_imagedata();
+        if (!s.equalsIgnoreCase("null")) {
+Log.i("profile Page :","not nulll");
 
-        if (sharedPreferences.contains("imagedata")) {
-            String s = sharedPreferences.getString("imagedata", "null");
-            if (!s.equalsIgnoreCase("null")) {
+            profilepic = stringToBitMap(s);
+            iv_profile.setImageBitmap(profilepic);
 
-                profilepic = stringToBitMap(s);
-                iv_profile.setImageBitmap(profilepic);
-            }
 
         } else {
+
+            Log.i("profile Page :"," nulll value for image data");
             iv_profile.setImageResource(R.drawable.dronecollege);
 
         }
@@ -226,7 +231,7 @@ public class ProfilePicture extends AppCompatActivity {
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("image", bitmapToString(bitmap));
-                        params.put("usn", sharedPreferences.getString("usn", "001"));
+                        params.put("usn", sharedPreferencesHelper.getUsn());
                         return params;
                     }
                 };
