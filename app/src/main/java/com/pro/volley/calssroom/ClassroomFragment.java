@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pro.volley.R;
+import com.pro.volley.auth.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -174,6 +175,16 @@ public class ClassroomFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+update_user_interface();    }
 
     private void fab_classroom_clicked() {
         //join class

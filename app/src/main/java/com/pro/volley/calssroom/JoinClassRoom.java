@@ -70,7 +70,7 @@ public class JoinClassRoom extends Activity {
                             if (jsonObject.getString("title").equals("success")) {
                                 Toast.makeText(getApplicationContext(),  jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                // if (sharedPreferences_classroom.contains("saved_classrooms_data_array")){
-                                    sharedPreferences_classroom.edit().clear().apply();
+                                    sharedPreferences_classroom.edit().remove("saved_classrooms_data_array").apply();
                                 //}
 
                                 // return;

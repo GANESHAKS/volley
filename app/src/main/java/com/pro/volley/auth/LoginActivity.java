@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
+import com.pro.volley.SharedPreferencesHelper;
 
 import org.json.JSONObject;
 
@@ -27,7 +28,8 @@ import java.util.Map;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
-    private SharedPreferences sharedPreferences;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+
     Button bt_login;
     EditText et_email, et_pass;
     MaterialCheckBox cb_login_as_faculty;
@@ -38,7 +40,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
-        sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
+
+
+        sharedPreferencesHelper= new SharedPreferencesHelper(getApplicationContext(),"com.pro.volley");
         bt_login = findViewById(R.id.bt_login);
         cb_login_as_faculty = findViewById(R.id.cb_login_as_faculty);
         et_email = findViewById(R.id.et_email_login);
@@ -97,8 +101,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     if (jsonObject.getString("title").equals("success")) {
                         bool = true;
                         Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        sharedPreferences.edit().putString("email", e).apply();
-                        sharedPreferences.edit().putString("usn", jsonObject.getString("usn")).apply();
+                     //   sharedPreferences.edit().putString("email", e).apply();
+                        sharedPreferencesHelper.setEmail(e);
+                        sharedPreferencesHelper.setUsn(jsonObject.optString("usn"));
+                      //  sharedPreferences.edit().putString("usn", jsonObject.getString("usn")).apply();
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(i);
                         finish(); // return;
