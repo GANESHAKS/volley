@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -53,6 +54,7 @@ public class ProfilePicture extends AppCompatActivity {
     SharedPreferencesHelper sharedPreferencesHelper;
     SharedPreferencesHelper.ProfileSharedPreference profileSharedPreference;
     Bitmap profilepic, dp;
+    Bitmap pic_to_be_uploaded;
     String imagedata;
     private Uri filePath, uri, u;
     Handler handler, handler2;
@@ -186,61 +188,13 @@ Log.i("profile Page :","not nulll");
         CropImage.startPickImageActivity(this);
     }
 
-    private void uploadProfilePicture(final Bitmap bitmap) {
+    private void uploadProfilePicture() {
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                //  final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                final StringRequest request = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "profile/uploadProfilePic.php", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getString("title").equals("success")) {
-                                Log.i("uploadProfilePicture", "msg: Everything is correct");
-                                dp = bitmap;
-                                profilepic = bitmap;
-                                u = saveImage(bitmap);
-
-                                handler.sendEmptyMessage(0);
-
-                                return;
-                            } else {
-                                //  Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                                Log.i("uploadProfilePicture", "msg: php Error");
-                                //return;
-
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Toast.makeText(getApplicationContext(), " " + "Server error", Toast.LENGTH_SHORT).show();
-
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("image", bitmapToString(bitmap));
-                        params.put("usn", sharedPreferencesHelper.getUsn());
-                        return params;
-                    }
-                };
-                int socketTimeOut = 50000;
-                RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                request.setRetryPolicy(policy);
-                RequestQueue queue = Volley.newRequestQueue(ProfilePicture.this);
-                queue.add(request);
-
+                DownloadTask downloadTask=new DownloadTask();
+                downloadTask.execute();
 
             }
         };
@@ -312,8 +266,8 @@ Log.i("profile Page :","not nulll");
                 }
 
                 if (bitmap != null) {
-
-                    uploadProfilePicture(bitmap);
+                    pic_to_be_uploaded = bitmap;
+                    uploadProfilePicture();
                 }
 
 
@@ -326,6 +280,64 @@ Log.i("profile Page :","not nulll");
         CropImage.activity(filePath).setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
                 .start(this);
+    }
+
+    class DownloadTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final StringRequest request = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "profile/uploadProfilePic.php", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getString("title").equals("success")) {
+                            Log.i("uploadProfilePicture", "msg: Everything is correct");
+                            dp = pic_to_be_uploaded;
+                            profilepic = pic_to_be_uploaded;
+                            u = saveImage(pic_to_be_uploaded);
+
+                            handler.sendEmptyMessage(0);
+
+                            return;
+                        } else {
+                            //  Toast.makeText(getApplicationContext(), jsonObject.getString("title") + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            Log.i("uploadProfilePicture", "msg: php Error");
+                            //return;
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(getApplicationContext(), " " + "Server error", Toast.LENGTH_SHORT).show();
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("image", bitmapToString(pic_to_be_uploaded));
+                    params.put("usn", sharedPreferencesHelper.getUsn());
+                    return params;
+                }
+            };
+            int socketTimeOut = 50000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            request.setRetryPolicy(policy);
+            RequestQueue queue = Volley.newRequestQueue(ProfilePicture.this);
+            queue.add(request);
+
+
+            return "null";
+        }
     }
 
 }

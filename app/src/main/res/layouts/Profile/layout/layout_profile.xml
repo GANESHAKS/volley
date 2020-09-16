@@ -40,20 +40,29 @@
 
                     android:orientation="vertical">
 
-                    <com.mikhaellopez.circularimageview.CircularImageView
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
-                        android:src="@drawable/dronecollege"
-                        app:civ_border_color="#ff0000"
-                        app:civ_border_width="2dp"
-                        app:civ_shadow="true"
-                        android:clickable="true"
 
-                        android:id="@+id/iv_profile_pic"
-                        android:layout_marginBottom="30dp"
-                        android:layout_marginTop="20dp"
-                        app:civ_shadow_color="#8BC34A"
-                        app:civ_shadow_radius="1" />
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:id="@+id/iv_profile_pic"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:clickable="true"
+                            android:src="@drawable/dronecollege"
+                            app:civ_border_color="#ff0000"
+                            app:civ_border_width="2dp"
+
+                            app:civ_shadow="true"
+                            app:civ_shadow_color="#8BC34A"
+                            app:civ_shadow_radius="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0">
+
+                        </com.mikhaellopez.circularimageview.CircularImageView>
+
 
                 </LinearLayout>
 
