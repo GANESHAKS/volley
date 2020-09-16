@@ -28,7 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pro.volley.R;
-import com.pro.volley.auth.LoginActivity;
+import com.pro.volley.SharedPreferencesHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,14 +46,19 @@ import java.util.Map;
  */
 public class ClassroomFragment extends Fragment {
     FloatingActionButton fab_classroom;
+    public static boolean deleted_refredsh = false;
     RecyclerView recyclerView;
     List<Classroom> list;
     String downloaded_response = "null";
     Context context;
     SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedPreferences, sharedPreferences_classroom;
+    SharedPreferencesHelper sharedPreferencesHelper;
+    SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
+
 
     MyClassRoomDetailsAdapter adapter;
+
     public ClassroomFragment() {
         // Required empty public constructor
     }
@@ -95,9 +100,13 @@ public class ClassroomFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
-        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
+//        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
+//        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
 
+        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
+        //sharedPreference_classroom = new SharedPreferencesHelper(context, "com.pro.volley.classroom");
+        //sharedPreference_classroom=sharedPreferencesHelper.new ClassroomSharedPreference(context);
+        sharedPreference_classroom = sharedPreferencesHelper.getclassroomSharedPreference();
 //        download_content_from_server_first_time(context);
     }
 
@@ -133,7 +142,7 @@ public class ClassroomFragment extends Fragment {
     }
 
     private void load_recyclerView(Context context) {
-        if (sharedPreferences_classroom.contains("saved_classrooms_data_array")) {
+        if (!sharedPreference_classroom.getSaved_classrooms_data_array().equalsIgnoreCase("null")) {
             update_user_interface();
         } else {
             download_content_from_server();
@@ -143,15 +152,24 @@ public class ClassroomFragment extends Fragment {
     }
 
     public void update_user_interface() {
-        Log.i("user interface ", "user interface");
-        String class_array = sharedPreferences_classroom.getString("saved_classrooms_data_array", "null");
+        //String class_array = sharedPreferences_classroom.getString("saved_classrooms_data_array", "null");
+        String class_array = sharedPreference_classroom.getSaved_classrooms_data_array();
         list = new ArrayList<Classroom>();
+        if (deleted_refredsh) {
+            deleted_refredsh = false;
+            download_content_from_server();
 
+        }
         if (class_array.equalsIgnoreCase("null")) {
-            Toast.makeText(context, "Try to download again", Toast.LENGTH_SHORT);
 
+            Toast.makeText(context, "Try to download again", Toast.LENGTH_SHORT);
+            download_content_from_server();
+
+        } else if (class_array.equalsIgnoreCase("zeroclassroomjoined")) {
+            Log.i("user interface ", "zeroclassess joined");
 
         } else {
+            Log.i("user interface ", "contains data" + class_array);
 
             try {
 
@@ -184,7 +202,16 @@ public class ClassroomFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-update_user_interface();    }
+        Log.i("onREsume  ", "onresume called");
+
+        try {
+            update_user_interface();
+        } catch (Exception e) {
+            Log.i("Onresume  errorrrrrr   ", e.getMessage());
+            e.printStackTrace();
+
+        }
+    }
 
     private void fab_classroom_clicked() {
         //join class
@@ -223,16 +250,18 @@ update_user_interface();    }
                         JSONObject jsonObject = new JSONObject(downloaded_response);
                        // Log.i("doin back", " executed" + downloaded_response);
                         if (jsonObject.optString("title").equalsIgnoreCase("success")) {
-                            sharedPreferences_classroom.edit().putString("saved_classrooms_data_array", jsonObject.optString("message")).apply();
+                            //sharedPreferences_classroom.edit().putString("saved_classrooms_data_array", jsonObject.optString("message")).apply();
+                            sharedPreference_classroom.setSaved_classrooms_data_array(jsonObject.optString("message"));
                             update_user_interface();
 
-                        }else
-                            if (jsonObject.optString("title").equalsIgnoreCase("unsuccess")){
-                           //     sharedPreferences_classroom.edit().putString("saved_classrooms_data_array","null").apply();
-                                sharedPreferences_classroom.edit().remove("saved_classrooms_data_array").apply();
-                                update_user_interface();
+                        } else if (jsonObject.optString("title").equalsIgnoreCase("unsuccess")) {
+                            //     sharedPreferences_classroom.edit().putString("saved_classrooms_data_array","null").apply();
+                            //  sharedPreferencesHelper_classroom.removeSaved_classrooms_data_array();
+                            sharedPreference_classroom.setSaved_classrooms_data_array("zeroclassroomjoined");
+                            //sharedPreferences_classroom.edit().remove("saved_classrooms_data_array").apply();
+                            update_user_interface();
 
-                            }
+                        }
                     } catch (Exception e) {
                         Log.i("Got excespptoion in doinback", "doin background Exe" + e.getMessage());
 
@@ -250,7 +279,8 @@ update_user_interface();    }
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("usn", sharedPreferences.getString("usn", "17cs030"));
+                    // params.put("usn", sharedPreferences.getString("usn", "17cs030"));
+                    params.put("usn", sharedPreferencesHelper.getUsn());
                     return params;
                 }
 

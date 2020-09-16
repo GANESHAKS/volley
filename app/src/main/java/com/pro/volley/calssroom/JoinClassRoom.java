@@ -2,7 +2,6 @@ package com.pro.volley.calssroom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.pro.volley.R;
+import com.pro.volley.SharedPreferencesHelper;
 
 import org.json.JSONObject;
 
@@ -26,14 +26,20 @@ import java.util.Map;
 
 public class JoinClassRoom extends Activity {
     MaterialButton bt_join_classroom;
-    private SharedPreferences sharedPreferences,sharedPreferences_classroom;
+    //private SharedPreferences sharedPreferences;
+    SharedPreferencesHelper sharedPreferencesHelper;
+    SharedPreferencesHelper.ClassroomSharedPreference classroomSharedPreference;
     EditText et_class_code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_join_class_room);
-        sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
-        sharedPreferences_classroom = getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
+       // sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
+        //sharedPreferences_classroom = getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
+
+        sharedPreferencesHelper=new SharedPreferencesHelper(getApplicationContext(),"com.pro.volley");
+        classroomSharedPreference=sharedPreferencesHelper.getclassroomSharedPreference();
+
         et_class_code = findViewById(R.id.et_classroom_join_code);
         bt_join_classroom = findViewById(R.id.bt_join_classroom);
         bt_join_classroom.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +76,9 @@ public class JoinClassRoom extends Activity {
                             if (jsonObject.getString("title").equals("success")) {
                                 Toast.makeText(getApplicationContext(),  jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                // if (sharedPreferences_classroom.contains("saved_classrooms_data_array")){
-                                    sharedPreferences_classroom.edit().remove("saved_classrooms_data_array").apply();
+
+                                    classroomSharedPreference.removeSaved_classrooms_data_array();
+                                    Log.i("Joinclass success", classroomSharedPreference.getSaved_classrooms_data_array());
                                 //}
 
                                 // return;
@@ -96,7 +104,7 @@ public class JoinClassRoom extends Activity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("usn", sharedPreferences.getString("usn", "001"));
+                params.put("usn", sharedPreferencesHelper.getUsn());
                 params.put("classcode", classcode);
                 return params;
             }

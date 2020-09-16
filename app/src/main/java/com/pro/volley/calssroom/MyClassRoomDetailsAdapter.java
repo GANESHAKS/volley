@@ -3,7 +3,9 @@ package com.pro.volley.calssroom;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.card.MaterialCardView;
 import com.pro.volley.R;
+import com.pro.volley.SharedPreferencesHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +39,21 @@ import java.util.Map;
 
 public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomDetailsAdapter.ViewHolder> {
     AlertDialog.Builder builder;
-    SharedPreferences sharedPreferences, sharedPreferences_classroom;
+    // SharedPreferences sharedPreferences, sharedPreferences_classroom;
+    SharedPreferencesHelper sharedPreferencesHelper;
+    SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
     Classroom myListData;
     private Context context;
+    String string_colors[] = {"#544a7d", "#ffd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
 
     public MyClassRoomDetailsAdapter(List<Classroom> classrooms, Context context) {
         this.context = context;
-        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
-        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
+        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
+        sharedPreference_classroom = sharedPreferencesHelper.new ClassroomSharedPreference(context);
+
+
         this.classrooms = classrooms;
     }
 
@@ -53,10 +65,16 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-         myListData = classrooms.get(position);
+        myListData = classrooms.get(position);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT, new int[]{Color.parseColor(string_colors[position % string_colors.length]), Color.parseColor(string_colors[(position + 1) % string_colors.length])});
+      gd.setCornerRadius((float) 20.0);
+      //gd.setPadding(10,10,10,10);
+        //holder.materialCardView.setBackground(gd);
         holder.tv_title.setText(myListData.title);
         holder.tv_code.setText(myListData.code);
         builder = new AlertDialog.Builder(context);
@@ -77,6 +95,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 //                                Toast.makeText(context, "you choose yes action for alertbox",
 //                                        Toast.LENGTH_SHORT).show();
                                 unenroll_from_class();
+
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -104,9 +123,24 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                     @Override
                     public void onResponse(String response) {
                         Log.i(" unenroll", response);
-                        if (sharedPreferences_classroom.contains("saved_classrooms_data_array")){
-                            sharedPreferences_classroom.edit().clear().apply();
+                        try {
+                            JSONObject j = new JSONObject(response);
+                            if (j.optString("title").equalsIgnoreCase("success")) {
+                                //  if (!sharedPreferencesHelper_classroom.getSaved_classrooms_data_array().equalsIgnoreCase("null")) {
+                                sharedPreference_classroom.removeSaved_classrooms_data_array();
+                                ClassroomFragment.deleted_refredsh = true;
 
+
+                                //}
+
+                            } else if (j.optString("title").equalsIgnoreCase("unsuccess")) {
+                                Toast.makeText(context, "refresh your screen", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
                     }
@@ -120,8 +154,9 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("usn", sharedPreferences.getString("usn", "001"));
-                        params.put("classcode",myListData.code);
+                        //params.put("usn", sharedPreferences.getString("usn", "001"));
+                        params.put("usn", sharedPreferencesHelper.getUsn());
+                        params.put("classcode", myListData.code);
                         return params;
                     }
 
@@ -163,5 +198,6 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             this.materialCardView = itemView.findViewById(R.id.materialCardView_classroom);
         }
     }
+
 
 }

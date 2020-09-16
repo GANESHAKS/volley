@@ -39,6 +39,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.pro.volley.MainActivity;
 import com.pro.volley.R;
+import com.pro.volley.SharedPreferencesHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -69,8 +70,11 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_profile);
-        sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
-        sharedPreferences_profile = this.getSharedPreferences("com.pro.volley.profile", MODE_PRIVATE);
+       // sharedPreferences = this.getSharedPreferences("com.pro.volley", MODE_PRIVATE);
+        //sharedPreferences_profile = this.getSharedPreferences("com.pro.volley.profile", MODE_PRIVATE);
+        SharedPreferencesHelper sharedPreferencesHelper=new SharedPreferencesHelper(getApplicationContext(),"com.pro.volley");
+        SharedPreferencesHelper.profile sp=  sharedPreferencesHelper.new profile(getApplicationContext());
+
         iv_profile_pic = findViewById(R.id.iv_profile_pic);
         swipeRefreshLayout = findViewById(R.id.sr_profile);
         tv_email = findViewById(R.id.tv_profile_email);
