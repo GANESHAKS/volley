@@ -40,15 +40,16 @@ style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
+
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_classroom_join_code"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/et_classroom_join_code"
 
-                    />
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
