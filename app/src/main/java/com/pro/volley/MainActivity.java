@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_LONG).show();
             i = new Intent(MainActivity.this, Settings.class);
                         startActivity(i);
-                        finish();
+                      //  finish();
                         return false;
                     case R.id.profile:
                        // Toast.makeText(getApplicationContext(), "ProfileSharedPreference", Toast.LENGTH_LONG).show();
                         i = new Intent(MainActivity.this, Profile.class);
                         startActivity(i);
-                        finish();
+                    //    finish();
                         return false;
 
                 }

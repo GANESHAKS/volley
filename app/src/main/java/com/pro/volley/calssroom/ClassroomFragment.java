@@ -2,7 +2,6 @@ package com.pro.volley.calssroom;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,14 +48,14 @@ import java.util.Map;
  */
 public class ClassroomFragment extends Fragment {
     FloatingActionButton fab_classroom;
-    public static boolean deleted_refredsh = false;
+    public static boolean deleted_refresh = false;
     RecyclerView recyclerView;
     List<Classroom> list;
     String downloaded_response = "null";
     Context context;
     MaterialToolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
-    SharedPreferences sharedPreferences, sharedPreferences_classroom;
+    //SharedPreferences sharedPreferences, sharedPreferences_classroom;
     SharedPreferencesHelper sharedPreferencesHelper;
     SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
 
@@ -107,24 +106,25 @@ public class ClassroomFragment extends Fragment {
 //        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
 //        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
 
-        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
         //sharedPreference_classroom = new SharedPreferencesHelper(context, "com.pro.volley.classroom");
         //sharedPreference_classroom=sharedPreferencesHelper.new ClassroomSharedPreference(context);
+        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
         sharedPreference_classroom = sharedPreferencesHelper.getclassroomSharedPreference();
 //        download_content_from_server_first_time(context);
+
     }
 
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         final View view = inflater.inflate(R.layout.layout_classroom, container, false);
         recyclerView = view.findViewById(R.id.rv_classroom);
         swipeRefreshLayout = view.findViewById(R.id.sr_classroom);
         fab_classroom = view.findViewById(R.id.fab_join_class);
- context = view.getContext();
+        context = view.getContext();
         update_user_interface();
         return view;
     }
@@ -159,8 +159,8 @@ public class ClassroomFragment extends Fragment {
         //String class_array = sharedPreferences_classroom.getString("saved_classrooms_data_array", "null");
         String class_array = sharedPreference_classroom.getSaved_classrooms_data_array();
         list = new ArrayList<Classroom>();
-        if (deleted_refredsh) {
-            deleted_refredsh = false;
+        if (deleted_refresh) {
+            deleted_refresh = false;
             download_content_from_server();
 
         }

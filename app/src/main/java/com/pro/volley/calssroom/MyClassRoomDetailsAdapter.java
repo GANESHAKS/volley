@@ -1,7 +1,6 @@
 package com.pro.volley.calssroom;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
@@ -82,11 +81,18 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
         holder.materialCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
+                Intent i = new Intent(context, Classroom_delete.class);
+                i.putExtra("CLASS_CODE", holder.tv_code.getText().toString().trim());
+                i.putExtra("CLASS_TITLE", holder.tv_title.getText().toString().trim());
+                context.startActivity(i);
+
+
                 // Toast.makeText(v.getContext(), "long click item: to enroll class alert dialog with two options ", Toast.LENGTH_LONG).show();
 
 
                 //Setting message manually and performing action on button click
-                builder.setMessage("You'll be no longer be able to see the class or participate in it.. ")
+               /* builder.setMessage("You'll be no longer be able to see the class or participate in it.. ")
                         .setCancelable(true)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -112,11 +118,13 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                 alert.setTitle("Unenroll from " + myListData.title + " ? ");
                 alert.show();
 
-
+*/
                 return true;
             }
 
+
             private void unenroll_from_class() {
+
                 Log.i("asdasdasdasd","dasdashasjbdasbdbashdasdsdjasbdasjd    "+myListData.code);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, context.getResources().getString(R.string.urlclassstudent) + "/unEnRollStudent.php", new Response.Listener<String>() {
                     @Override
@@ -127,7 +135,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                             if (j.optString("title").equalsIgnoreCase("success")) {
                                 //  if (!sharedPreferencesHelper_classroom.getSaved_classrooms_data_array().equalsIgnoreCase("null")) {
                                 sharedPreference_classroom.removeSaved_classrooms_data_array();
-                                ClassroomFragment.deleted_refredsh = true;
+                                ClassroomFragment.deleted_refresh = true;
 
 
                                 //}
@@ -168,15 +176,28 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 
             }
         });
+
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "click on item: ", Toast.LENGTH_LONG).show();
-                Log.i("MYCLAASSROOM ADAPTER   :","dasdsadsada        code is "+myListData.code);
-                Intent i = new Intent(view.getContext(), Individual_Class.class);
-                i.putExtra("CLASS_CODE",holder.tv_code.getText().toString().trim());
-                context.startActivity(i);
+                Log.i("MYCLAASSROOM ADAPTER   :", "dasdsadsada        code is " + myListData.code);
+                boolean f = false;
+                for (int i = 0; i < classrooms.size(); i++) {
+                    Classroom classroom = classrooms.get(i);
+                    if (classroom.getCode().equalsIgnoreCase(holder.tv_code.getText().toString().trim())) {
+                        f = true;
+                    }
+                }
+                if (f) {
 
+                    Intent i = new Intent(view.getContext(), Individual_Class.class);
+                    i.putExtra("CLASS_CODE", holder.tv_code.getText().toString().trim());
+                    context.startActivity(i);
+                    f = false;
+                } else {
+                    Toast.makeText(context, "Class not found Refresh your Screen", Toast.LENGTH_SHORT).show();
+                }
 
 
             }

@@ -1,6 +1,8 @@
 package com.pro.volley.calssroom;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.pro.volley.R;
+import com.pro.volley.profile.Profile;
 
 public class Individual_Class extends AppCompatActivity {
     MaterialToolbar toolbar;
@@ -19,16 +22,24 @@ public class Individual_Class extends AppCompatActivity {
     NavController navController;
     NavOptions navOptions;
     boolean flag = false;
-    String CLASS_CODE="null";
+    String CLASS_CODE = "null";
+
+    @Override
+    protected void onPause() {
+        Log.i("Indivial class", "Paused   ");
+        super.onPause();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_individual__class);
-if (getIntent().hasExtra("CLASS_CODE")){
+        if (getIntent().hasExtra("CLASS_CODE")) {
 
-    CLASS_CODE = getIntent().getStringExtra("CLASS_CODE");
-}
-
+            CLASS_CODE = getIntent().getStringExtra("CLASS_CODE");
+        } else {
+            onBackPressed();
+        }
 
 
         tabLayout = findViewById(R.id.tab_classroom);
@@ -37,11 +48,11 @@ if (getIntent().hasExtra("CLASS_CODE")){
 //                .setLaunchSingleTop(true)
 //                .setPopUpTo(navController.getGraph().getStartDestination(), false)
 //                .build();
-         navOptions = new NavOptions.Builder()
+        navOptions = new NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setEnterAnim(R.anim.left_to_right)
                 .setExitAnim(R.anim.left_to_right)
-              //  .setPopEnterAnim(R.anim.right_to_left)
+                //  .setPopEnterAnim(R.anim.right_to_left)
                 //.setPopExitAnim(R.anim.right_to_left)
                 .setPopUpTo(navController.getGraph().getStartDestination(), false)
                 .build();
@@ -57,12 +68,13 @@ if (getIntent().hasExtra("CLASS_CODE")){
                     case R.id.settings:
                         Toast.makeText(getApplicationContext(), "settings", Toast.LENGTH_LONG).show();
 
-//                        finish();
+//
                         return false;
                     case R.id.profile:
                         // Toast.makeText(getApplicationContext(), "ProfileSharedPreference", Toast.LENGTH_LONG).show();
 
-                        //                      finish();
+                        Intent i=new Intent(getApplicationContext(), Profile.class);
+                        startActivity(i);
                         return false;
                     case R.id.goto_home:
                         finish();

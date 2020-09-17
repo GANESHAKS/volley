@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".calssroom.Individual_Class"></activity>
+        <activity
+            android:name=".calssroom.Classroom_delete"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
+        <activity android:name=".calssroom.Individual_Class" />
         <activity android:name=".calssroom.JoinClassRoom" />
         <activity android:name=".extra.library.Library" />
 
