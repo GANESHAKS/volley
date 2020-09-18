@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -43,23 +44,39 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        webView.saveState(savedInstanceState);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("OnCreate called", "Oncraete called   ");
+
+        /*
         if (savedInstanceState != null) {
+            Log.i("OnCreate called  "," inside if true  ");
             webView.restoreState(savedInstanceState);
         } else {
+            Log.i("OnCreate called  "," inside if false");
             //  webView.loadUrl(getResources().getString(R.string.urlweb));
-        }
+        }*/
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null) {
-            webView.loadUrl(getResources().getString(R.string.urlweb));
+        Log.i("OnCreate called", "Oncraete called   ");
+
+       /* if (savedInstanceState == null) {
+            Log.i("ON ACTIVITTY  called  ", " inside if true  ");
+
+            //  webView.loadUrl(getResources().getString(R.string.urlweb));
         } else {
-            webView.restoreState(savedInstanceState);
-        }
+            Log.i("ON ACTIVITTY  called  ", " inside if fal" + "  ");
+            //webView.restoreState(savedInstanceState);
+        }*/
     }
 
     @Override
@@ -152,7 +169,13 @@ public class FeedFragment extends Fragment {
                 WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
             }
         }
-        //  webView.loadUrl(getResources().getString(R.string.urlweb));
+        if (savedInstanceState != null) {
+            Log.i("ON CREATE VIEW ", "ON CREATE VIEW if true");
+            webView.restoreState(savedInstanceState);
+        } else {
+            Log.i("ON CREATE VIEW ", "ON CREATE VIEW if true");
+            webView.loadUrl(getResources().getString(R.string.urlweb));
+        }
         swiped();
 
         return view;
