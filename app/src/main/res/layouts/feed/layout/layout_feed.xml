@@ -3,27 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".feed.FeedFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="feed" />
+    <include layout="@layout/appbar_layout" />
 
     <include layout="@layout/layout_content_feed" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_feed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:clickable="true"
-        android:elevation="4dp"
-        android:src="@drawable/ic_new_fab"
-        app:fabSize="normal" />
-
+    <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+         android:id="@+id/fab_add_feed"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_margin="20dp"
+         android:clickable="true"
+         android:elevation="4dp"
+         android:src="@drawable/ic_new_fab"
+         app:fabSize="normal" />
+ -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

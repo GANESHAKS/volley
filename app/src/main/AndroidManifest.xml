@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar.Bridge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feed.Feed_new_Feed"></activity>
         <activity
             android:name=".calssroom.Classroom_delete"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -42,7 +41,14 @@
         <activity android:name=".extra.events.Events" />
         <activity android:name=".extra.department.Department" />
         <activity android:name=".extra.attendance.Attendance" />
-        <activity android:name=".MainActivity" />
+        <!--           android:launchMode="singleInstance"
+        android:alwaysRetainTaskState="true"   can crash-->
+        <activity
+            android:name=".MainActivity"
+            android:alwaysRetainTaskState="true"
+
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".auth.RegistrationActivity"
             android:noHistory="true" />

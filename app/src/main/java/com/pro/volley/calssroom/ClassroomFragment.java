@@ -3,10 +3,12 @@ package com.pro.volley.calssroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -30,7 +32,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pro.volley.R;
+import com.pro.volley.Settings;
 import com.pro.volley.SharedPreferencesHelper;
+import com.pro.volley.profile.Profile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,6 +128,32 @@ public class ClassroomFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_classroom);
         swipeRefreshLayout = view.findViewById(R.id.sr_classroom);
         fab_classroom = view.findViewById(R.id.fab_join_class);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_top);
+        toolbar.setTitle("ClassRoom");
+        toolbar.setTitleTextColor(Color.parseColor("#ff0000"));
+        toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.settings:
+                        Toast.makeText(context, "settings", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(getContext(), Settings.class);
+                        startActivity(i);
+                        //  finish();
+                        return false;
+                    case R.id.profile:
+                        // Toast.makeText(getApplicationContext(), "ProfileSharedPreference", Toast.LENGTH_LONG).show();
+                        i = new Intent(getContext(), Profile.class);
+                        startActivity(i);
+                        //    finish();
+                        return false;
+
+                }
+                return false;
+            }
+        });
         context = view.getContext();
         update_user_interface();
         return view;
