@@ -34,7 +34,6 @@
         android:layout_above="@+id/navigationview"
 
 
-        android:layout_below="@+id/toolbar"
 
         android:layout_alignParentStart="true"
 

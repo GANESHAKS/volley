@@ -42,13 +42,16 @@
         <activity android:name=".extra.department.Department" />
         <activity android:name=".extra.attendance.Attendance" />
         <!--           android:launchMode="singleInstance"
+        android:alwaysRetainTaskState="true"
+        android:launchMode="singleInstance"
+        android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|uiMode|screenSize|smallestScreenSize"
         android:alwaysRetainTaskState="true"   can crash-->
         <activity
-            android:name=".MainActivity"
-            android:alwaysRetainTaskState="true"
 
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:launchMode="singleInstance" />
+            android:name=".MainActivity"
+
+
+            />
         <activity
             android:name=".auth.RegistrationActivity"
             android:noHistory="true" />

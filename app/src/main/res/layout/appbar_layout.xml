@@ -2,7 +2,8 @@
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="?actionBarSize"
+    android:theme="?theme">
 
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -10,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_margin="5dp"
-        android:elevation="2dp"
         app:layout_scrollFlags="scroll|enterAlways"
 
         >

@@ -74,6 +74,7 @@ public class ClassroomFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      **/
+/*
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class ClassroomFragment extends Fragment {
 
     }
 
+*/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -237,11 +239,6 @@ public class ClassroomFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override

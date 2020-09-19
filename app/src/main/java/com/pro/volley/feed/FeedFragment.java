@@ -43,12 +43,12 @@ public class FeedFragment extends Fragment {
     public FeedFragment() {
     }
 
-    @Override
+   /* @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         webView.saveState(savedInstanceState);
     }
-
+*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +69,14 @@ public class FeedFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i("OnCreate called", "Oncraete called   ");
 
-       /* if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Log.i("ON ACTIVITTY  called  ", " inside if true  ");
 
             //  webView.loadUrl(getResources().getString(R.string.urlweb));
         } else {
             Log.i("ON ACTIVITTY  called  ", " inside if fal" + "  ");
             //webView.restoreState(savedInstanceState);
-        }*/
+        }
     }
 
     @Override
@@ -226,13 +226,5 @@ public class FeedFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 }
