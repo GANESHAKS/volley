@@ -9,11 +9,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.pro.volley.R;
+import com.pro.volley.calssroom.Individual_Class_Fragments.Individual_class_viewpage_Adapter;
 import com.pro.volley.profile.Profile;
 
 public class Individual_Class extends AppCompatActivity {
@@ -23,6 +24,8 @@ public class Individual_Class extends AppCompatActivity {
     NavOptions navOptions;
     boolean flag = false;
     String CLASS_CODE = "null";
+    ViewPager viewPager;
+    Individual_class_viewpage_Adapter viewPagerAdapter;
 
     @Override
     protected void onPause() {
@@ -43,22 +46,9 @@ public class Individual_Class extends AppCompatActivity {
 
 
         tabLayout = findViewById(R.id.tab_classroom);
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_classroom);
-//        navOptions = new NavOptions.Builder()
-//                .setLaunchSingleTop(true)
-//                .setPopUpTo(navController.getGraph().getStartDestination(), false)
-//                .build();
-        navOptions = new NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setEnterAnim(R.anim.left_to_right)
-                .setExitAnim(R.anim.left_to_right)
-                //  .setPopEnterAnim(R.anim.right_to_left)
-                //.setPopExitAnim(R.anim.right_to_left)
-                .setPopUpTo(navController.getGraph().getStartDestination(), false)
-                .build();
-
+        //
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("ClassRoom Name  :"+CLASS_CODE);
+        toolbar.setTitle("ClassRoom Name  :" + CLASS_CODE);
         toolbar.inflateMenu(R.menu.menu_individual_classroom);
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
@@ -84,35 +74,11 @@ public class Individual_Class extends AppCompatActivity {
         });
 
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        flag = false;
-                        navController.navigate(R.id.individual_class_stream, null, navOptions);
-                        break;
-                    case 1:
-                        flag = true;
-                        navController.navigate(R.id.individual_Class_ClassWork, null, navOptions);
-                        break;
-                    case 2:
-                        flag = true;
-                        navController.navigate(R.id.individual_Class_People, null, navOptions);
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        viewPager = findViewById(R.id.viewPager_indi_class);
+        viewPagerAdapter = new Individual_class_viewpage_Adapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = findViewById(R.id.tab_classroom);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
