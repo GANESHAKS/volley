@@ -80,7 +80,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_header;
+        public TextView tv_header;
 
         HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -100,7 +100,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
     public static class PeopleViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView tv_name;
+        public TextView tv_name;
 
         PeopleViewHolder(@NonNull View itemView) {
             super(itemView);
