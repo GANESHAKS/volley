@@ -3,6 +3,7 @@ package com.pro.volley.calssroom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,7 +23,6 @@ public class Individual_Class extends AppCompatActivity {
     TabLayout tabLayout;
     NavController navController;
     NavOptions navOptions;
-    boolean flag = false;
     String CLASS_CODE = "null";
     ViewPager viewPager;
     Individual_class_viewpage_Adapter viewPagerAdapter;
@@ -83,10 +83,27 @@ public class Individual_Class extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (flag) {
-            tabLayout.getTabAt(0).select();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (viewPager.getCurrentItem() == 0) {
+                finish();
 
-        } else super.onBackPressed();
+                return false;
+            }
+            viewPager.setCurrentItem(0, true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+        /*else {
+            super.onBackPressed();
+            return super.onKeyDown(keyCode, event);
+        }*/
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 }

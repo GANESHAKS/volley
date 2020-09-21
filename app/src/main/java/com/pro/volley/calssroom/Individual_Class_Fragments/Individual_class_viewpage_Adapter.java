@@ -26,6 +26,19 @@ public class Individual_class_viewpage_Adapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        String title = null;
+        if (position == 0) {
+            title = "STREAM";
+        } else if (position == 1) {
+            title = "CLASS WORK";
+        } else if (position == 2) {
+            title = "PEOPLE";
+        }
+        return title;
+    }
+
+    @Override
     public int getCount() {
         return 3;
     }

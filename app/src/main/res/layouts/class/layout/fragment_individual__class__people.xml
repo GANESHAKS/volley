@@ -6,13 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff00ff"
+    android:padding="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
     tools:context=".calssroom.Individual_Class_Fragments.Individual_Class_People">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="match_parent"
-
+    <LinearLayout
         android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:id="@+id/rv_indi_class_people"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
