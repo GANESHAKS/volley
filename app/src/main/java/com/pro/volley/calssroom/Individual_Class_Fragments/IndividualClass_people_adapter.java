@@ -88,18 +88,12 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
             //image beku
         }
 
-        private void setHeader(Peoples people) {
-            tv_header.setText(people.getName());
-
-            //
-
-        }
 
     }
 
     public static class PeopleViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+       public ImageView imageView;
         public TextView tv_name;
 
         PeopleViewHolder(@NonNull View itemView) {
@@ -107,10 +101,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
             tv_name = itemView.findViewById(R.id.tv_item_indi_class_people_name);
         }
 
-        private void setPeople(Peoples people) {
-            tv_name.setText(people.getName());
 
-        }
     }
 
 

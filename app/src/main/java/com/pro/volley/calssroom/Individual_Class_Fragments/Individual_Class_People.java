@@ -31,6 +31,7 @@ public class Individual_Class_People extends Fragment {
         Peoples p1 = new Peoples("Students", "header");
         Peoples p2 = new Peoples("ganesh", "people");
         peoples = new ArrayList<>();
+        peoples.add(p);
         peoples.add(p0);
         peoples.add(p1);
         peoples.add(p2);

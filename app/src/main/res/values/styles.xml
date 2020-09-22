@@ -22,7 +22,7 @@
         <item name="boxCornerRadiusTopEnd">20dp</item>
 
     </style>
-    <!-- this is linear  layout style auth -->
+    <!-- styles.xml -->
     <style name="linearlayout">
         <item name="android:background">@drawable/custom_linear_layout</item>
         <item name="android:layout_marginBottom">30dp</item>

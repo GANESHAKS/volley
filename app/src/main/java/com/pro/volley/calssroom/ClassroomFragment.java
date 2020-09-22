@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +54,7 @@ public class ClassroomFragment extends Fragment {
     FloatingActionButton fab_classroom;
     public static boolean deleted_refresh = false;
     RecyclerView recyclerView;
-    List<Classroom> list;
+    ArrayList<Classroom> list;
     String downloaded_response = "null";
     Context context;
     MaterialToolbar toolbar;
@@ -62,19 +62,33 @@ public class ClassroomFragment extends Fragment {
     //SharedPreferences sharedPreferences, sharedPreferences_classroom;
     SharedPreferencesHelper sharedPreferencesHelper;
     SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
-
-
+    DataBase_Manager_Class dbManager;
+    SimpleCursorAdapter cursorAdapter;
     MyClassRoomDetailsAdapter adapter;
 
     public ClassroomFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+//        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
+//        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
+
+        //sharedPreference_classroom = new SharedPreferencesHelper(context, "com.pro.volley.classroom");
+        //sharedPreference_classroom=sharedPreferencesHelper.new ClassroomSharedPreference(context);
+        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
+        sharedPreference_classroom = sharedPreferencesHelper.getclassroomSharedPreference();
+//        download_content_from_server_first_time(context);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      **/
-/*
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +98,7 @@ public class ClassroomFragment extends Fragment {
 
     }
 
-*/
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -106,25 +120,13 @@ public class ClassroomFragment extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-//        sharedPreferences = context.getSharedPreferences("com.pro.volley", Context.MODE_PRIVATE);
-//        sharedPreferences_classroom = context.getSharedPreferences("com.pro.volley.classroom", Context.MODE_PRIVATE);
-
-        //sharedPreference_classroom = new SharedPreferencesHelper(context, "com.pro.volley.classroom");
-        //sharedPreference_classroom=sharedPreferencesHelper.new ClassroomSharedPreference(context);
-        sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
-        sharedPreference_classroom = sharedPreferencesHelper.getclassroomSharedPreference();
-//        download_content_from_server_first_time(context);
-
-    }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dbManager = new DataBase_Manager_Class(getActivity().getApplicationContext());
+        dbManager.open();
 
         final View view = inflater.inflate(R.layout.layout_classroom, container, false);
         recyclerView = view.findViewById(R.id.rv_classroom);
@@ -190,7 +192,7 @@ public class ClassroomFragment extends Fragment {
     public void update_user_interface() {
         //String class_array = sharedPreferences_classroom.getString("saved_classrooms_data_array", "null");
         String class_array = sharedPreference_classroom.getSaved_classrooms_data_array();
-        list = new ArrayList<Classroom>();
+        list = null;
         if (deleted_refresh) {
             deleted_refresh = false;
             download_content_from_server();
@@ -207,21 +209,14 @@ public class ClassroomFragment extends Fragment {
         } else {
             Log.i("user interface ", "contains data" + class_array);
 
-            try {
+            if (dbManager.getDetailsCount() != 0) {
+                list = dbManager.fetch_details();
 
-                JSONArray jsonArray = new JSONArray(class_array);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    Classroom c = new Classroom(jsonObject.optString("class_code"), jsonObject.optString("class_title"));
-                    list.add(c);
+                Log.i("user interface ", " contains data    dbmanger    " + dbManager.getDetailsCount());
+            } else {
+                Log.i("user interface ", "does not contains data    dbmanger");
 
-                }
-
-
-            } catch (JSONException j) {
-                Log.i("Json array ", "Error");
             }
-
         }
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -262,6 +257,25 @@ public class ClassroomFragment extends Fragment {
 
     }
 
+    private void saveDataInDatabase(String response) {
+        try {
+
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Classroom c = new Classroom(jsonObject.optString("class_code"), jsonObject.optString("class_title"));
+                Log.i("SAving content  ", c.code);
+                dbManager.insert_details(c);
+
+            }
+
+
+        } catch (JSONException j) {
+            Log.i("Json array  save data", "Error");
+        }
+
+    }
+
     private class AsyncTaskExample extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
@@ -290,10 +304,11 @@ public class ClassroomFragment extends Fragment {
 
                     try {
                         JSONObject jsonObject = new JSONObject(downloaded_response);
-                       // Log.i("doin back", " executed" + downloaded_response);
                         if (jsonObject.optString("title").equalsIgnoreCase("success")) {
+                            Log.i("doin back ", " title succeeeesss");
                             //sharedPreferences_classroom.edit().putString("saved_classrooms_data_array", jsonObject.optString("message")).apply();
                             sharedPreference_classroom.setSaved_classrooms_data_array(jsonObject.optString("message"));
+                            saveDataInDatabase(jsonObject.optString("message"));
                             update_user_interface();
 
                         } else if (jsonObject.optString("title").equalsIgnoreCase("unsuccess")) {
@@ -342,7 +357,6 @@ public class ClassroomFragment extends Fragment {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             swipeRefreshLayout.setRefreshing(false);
-
 
 
         }

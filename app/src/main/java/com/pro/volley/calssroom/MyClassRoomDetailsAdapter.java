@@ -207,12 +207,16 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 
     @Override
     public int getItemCount() {
-        return classrooms.size();
+        if (classrooms != null) {
+
+            return classrooms.size();
+        }
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_title, tv_code;
-        String string_colors[] = {"#544a7d", "#afd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
+        String[] string_colors = {"#544a7d", "#afd452", "#009FFF", "#ec2F4B", "#eaafc8", "#654ea3"};
 
         public MaterialCardView materialCardView;
 
