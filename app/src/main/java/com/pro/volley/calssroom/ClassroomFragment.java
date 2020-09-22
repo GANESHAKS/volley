@@ -218,6 +218,7 @@ public class ClassroomFragment extends Fragment {
 
             }
         }
+
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //if (list.size()>1){

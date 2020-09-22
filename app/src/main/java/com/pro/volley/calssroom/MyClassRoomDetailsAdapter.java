@@ -15,24 +15,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.card.MaterialCardView;
 import com.pro.volley.R;
 import com.pro.volley.SharedPreferencesHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomDetailsAdapter.ViewHolder> {
@@ -44,12 +31,14 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
     private Context context;
     // private Classroom[] classroom;
     private List<Classroom> classrooms;
+    DataBase_Manager_Class dataBase_manager_class;
 
     public MyClassRoomDetailsAdapter(List<Classroom> classrooms, Context context) {
         this.context = context;
         sharedPreferencesHelper = new SharedPreferencesHelper(context, "com.pro.volley");
         sharedPreference_classroom = sharedPreferencesHelper.new ClassroomSharedPreference(context);
-
+        dataBase_manager_class = new DataBase_Manager_Class(context);
+        dataBase_manager_class.open();
 
         this.classrooms = classrooms;
     }
@@ -123,73 +112,17 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             }
 
 
-            private void unenroll_from_class() {
 
-                Log.i("asdasdasdasd","dasdashasjbdasbdbashdasdsdjasbdasjd    "+myListData.code);
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, context.getResources().getString(R.string.urlclassstudent) + "/unEnRollStudent.php", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(" unenroll", response);
-                        try {
-                            JSONObject j = new JSONObject(response);
-                            if (j.optString("title").equalsIgnoreCase("success")) {
-                                //  if (!sharedPreferencesHelper_classroom.getSaved_classrooms_data_array().equalsIgnoreCase("null")) {
-                                sharedPreference_classroom.removeSaved_classrooms_data_array();
-                                ClassroomFragment.deleted_refresh = true;
-
-
-                                //}
-
-                            } else if (j.optString("title").equalsIgnoreCase("unsuccess")) {
-                                Toast.makeText(context, "refresh your screen", Toast.LENGTH_SHORT).show();
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "try again", Toast.LENGTH_SHORT).show();
-                        Log.i("Error while  unenroll", "Un en roll" + error.getMessage());
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        //params.put("usn", sharedPreferences.getString("usn", "001"));
-                        params.put("usn", sharedPreferencesHelper.getUsn());
-                        params.put("classcode", holder.tv_code.getText().toString());
-                        return params;
-                    }
-
-                };
-
-                RetryPolicy policy = new DefaultRetryPolicy(50000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                stringRequest.setRetryPolicy(policy);
-                RequestQueue queue = Volley.newRequestQueue(context);
-                queue.add(stringRequest);
-
-            }
         });
 
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "click on item: ", Toast.LENGTH_LONG).show();
-                Log.i("MYCLAASSROOM ADAPTER   :", "dasdsadsada        code is " + myListData.code);
+                Log.i("MYCLAASSROOM ADAPTER   :", "onclick        code is " + myListData.code);
                 boolean f = false;
-                for (int i = 0; i < classrooms.size(); i++) {
-                    Classroom classroom = classrooms.get(i);
-                    if (classroom.getCode().equalsIgnoreCase(holder.tv_code.getText().toString().trim())) {
-                        f = true;
-                    }
-                }
-                if (f) {
+
+                if (dataBase_manager_class.class_Contains_code(holder.tv_code.getText().toString().trim())) {
 
                     Intent i = new Intent(view.getContext(), Individual_Class.class);
                     i.putExtra("CLASS_CODE", holder.tv_code.getText().toString().trim());

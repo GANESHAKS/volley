@@ -35,7 +35,7 @@ public class Database_Helper_Indi_Class extends SQLiteOpenHelper {
     //
     private static final String CREATE_TABLE_DETAILS = "CREATE TABLE " + TABLE_CLASSROOM_DETAILS + "(" +
             COLUMN_DETAILS_CODE + " TEXT PRIMARY KEY," +
-            COLUMN_DETAILS_TITLE + " TEXT " +
+            COLUMN_DETAILS_TITLE + " TEXT" +
             ");";
     private static final String CREATE_TABLE_PEOPLE = "CREATE TABLE " + TABLE_PEOPLE + " (" +
             COLUMN_PEOPLE_ID + " TEXT, " +
@@ -48,7 +48,7 @@ public class Database_Helper_Indi_Class extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_WORK = "CREATE TABLE " + TABLE_WORK + " (" +
             COLUMN_WORK_ID + " TEXT, " +
             COLUMN_WORK_DESC + " TEXT, " +
-            COLUMN_WORK_CODE + " TEXT ," +
+            COLUMN_WORK_CODE + " TEXT, " +
             COLUMN_WORK_NO_OF_ATTACHMENT + " TEXT, " + COLUMN_WORK_CODE + "TEXT,PRIMARY KEY(" + COLUMN_WORK_CODE + "," + COLUMN_WORK_ID + "),"
             + "FOREIGN KEY(" + COLUMN_WORK_CODE + ") REFERENCES " + TABLE_CLASSROOM_DETAILS + "(" + COLUMN_DETAILS_CODE + ") ON DELETE CASCADE "
             + ");";

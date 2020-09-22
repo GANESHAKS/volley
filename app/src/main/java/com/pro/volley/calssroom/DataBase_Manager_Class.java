@@ -114,13 +114,35 @@ public class DataBase_Manager_Class {
     }
 
     public int getDetailsCount() {
-        int count = 3;
+        int count = 0;
         String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim();
         Cursor cursor = database.rawQuery(countQuery, null);
         count = cursor.getCount();
         cursor.close();
 
         return count;
+    }
+
+    public boolean class_Contains_code(String s) {
+        int count = 0;
+
+        try {
+            String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + "=?";
+            Cursor c = database.rawQuery(countQuery, new String[]{s.trim()});
+
+            count = c.getCount();
+            Log.i(" DAta base contains code   :", "        no of row is " + count);
+
+            c.close();
+            if (count == 1) {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.d("CLAss COntaains  code  :  ", "class contains code  :  " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public void delete_details(String code) throws SQLException {
