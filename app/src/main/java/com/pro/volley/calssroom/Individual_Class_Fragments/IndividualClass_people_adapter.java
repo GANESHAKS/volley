@@ -18,12 +18,12 @@ import java.util.ArrayList;
 public class IndividualClass_people_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int ITEM_HEADER = 0;
     public static final int ITEM_PEOPLE = 1;
-    ArrayList<Peoples> peoplesList;
+    ArrayList<Peoples> studentlist;
     Peoples peoples;
     Context context;
 
     public IndividualClass_people_adapter(ArrayList<Peoples> peoplesList, Context context) {
-        this.peoplesList = peoplesList;
+        this.studentlist = peoplesList;
         this.context = context;
     }
 
@@ -46,7 +46,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        peoples = peoplesList.get(position);
+        peoples = studentlist.get(position);
         if (getItemViewType(position) == ITEM_HEADER) {
             Log.d("OnBind    if true", peoples.getName());
             //do initializations
@@ -63,7 +63,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemViewType(int position) {
-        if (peoplesList.get(position).getItem_type().equalsIgnoreCase("header")) {
+        if (studentlist.get(position).getItem_type().equalsIgnoreCase("header")) {
             //   Log.d("Entered getItemView Type", "item view" + position);
             return ITEM_HEADER;
         } else {
@@ -75,7 +75,7 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
-        return peoplesList.size();
+        return studentlist.size();
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {

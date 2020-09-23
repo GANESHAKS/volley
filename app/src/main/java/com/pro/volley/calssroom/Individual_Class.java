@@ -1,6 +1,7 @@
 package com.pro.volley.calssroom;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,7 +24,7 @@ public class Individual_Class extends AppCompatActivity {
     TabLayout tabLayout;
     NavController navController;
     NavOptions navOptions;
-    String CLASS_CODE = "null";
+    String CLASS_CODE = "null", CLASS_TITLE = "";
     ViewPager viewPager;
     Individual_class_viewpage_Adapter viewPagerAdapter;
 
@@ -40,6 +41,7 @@ public class Individual_Class extends AppCompatActivity {
         if (getIntent().hasExtra("CLASS_CODE")) {
 
             CLASS_CODE = getIntent().getStringExtra("CLASS_CODE");
+            CLASS_TITLE = getIntent().getStringExtra("CLASS_TITLE");
         } else {
             onBackPressed();
         }
@@ -48,7 +50,8 @@ public class Individual_Class extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_classroom);
         //
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("ClassRoom Name  :" + CLASS_CODE);
+        toolbar.setTitle(CLASS_TITLE);
+        toolbar.setTitleTextColor(Color.parseColor("#ff0000"));
         toolbar.inflateMenu(R.menu.menu_individual_classroom);
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
@@ -75,7 +78,7 @@ public class Individual_Class extends AppCompatActivity {
 
 
         viewPager = findViewById(R.id.viewPager_indi_class);
-        viewPagerAdapter = new Individual_class_viewpage_Adapter(getSupportFragmentManager());
+        viewPagerAdapter = new Individual_class_viewpage_Adapter(getSupportFragmentManager(), CLASS_CODE);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout = findViewById(R.id.tab_classroom);
         tabLayout.setupWithViewPager(viewPager);

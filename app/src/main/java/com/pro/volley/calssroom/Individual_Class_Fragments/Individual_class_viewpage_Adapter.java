@@ -6,9 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class Individual_class_viewpage_Adapter extends FragmentPagerAdapter {
+    String CLASS_CODE = "";
 
-    public Individual_class_viewpage_Adapter(@NonNull FragmentManager fm) {
+    public Individual_class_viewpage_Adapter(@NonNull FragmentManager fm, String CLASS_CODE) {
         super(fm);
+        this.CLASS_CODE = CLASS_CODE;
     }
 
     @NonNull
@@ -16,11 +18,11 @@ public class Individual_class_viewpage_Adapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment = null;
         if (position == 0) {
-            fragment = new Individual_class_stream();
+            fragment = new Individual_class_stream(CLASS_CODE);
         } else if (position == 1) {
-            fragment = new Individual_Class_ClassWork();
+            fragment = new Individual_Class_ClassWork(CLASS_CODE);
         } else {
-            fragment = new Individual_Class_People();
+            fragment = new Individual_Class_People(CLASS_CODE);
         }
         return fragment;
     }

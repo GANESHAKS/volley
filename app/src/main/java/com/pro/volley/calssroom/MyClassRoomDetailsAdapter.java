@@ -125,6 +125,7 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
 
                     Intent i = new Intent(view.getContext(), Individual_Class.class);
                     i.putExtra("CLASS_CODE", holder.tv_code.getText().toString().trim());
+                    i.putExtra("CLASS_TITLE", holder.tv_title.getText().toString().trim());
                     context.startActivity(i);
                     f = false;
                 } else {

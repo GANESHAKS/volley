@@ -12,7 +12,7 @@ import com.pro.volley.R;
 public class Individual_Class_ClassWork extends Fragment {
 
 
-    public Individual_Class_ClassWork() {
+    public Individual_Class_ClassWork(String CLASS_CODE) {
         // Required empty public constructor
     }
 

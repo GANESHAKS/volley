@@ -41,7 +41,6 @@ public class Database_Helper_Indi_Class extends SQLiteOpenHelper {
             COLUMN_PEOPLE_ID + " TEXT, " +
             COLUMN_PEOPLE_NAME + " TEXT, " +
             COLUMN_PEOPLE_CODE + " TEXT ," +
-
             COLUMN_PEOPLE_TYPE + " TEXT, " + COLUMN_PEOPLE_CODE + "TEXT,PRIMARY KEY(" + COLUMN_PEOPLE_CODE + "," + COLUMN_PEOPLE_ID + "),"
             + "FOREIGN KEY(" + COLUMN_PEOPLE_CODE + ") REFERENCES " + TABLE_CLASSROOM_DETAILS + "(" + COLUMN_DETAILS_CODE + ") ON DELETE CASCADE "
             + ");";
