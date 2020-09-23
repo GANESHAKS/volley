@@ -34,11 +34,14 @@ public class Classroom_delete extends AppCompatActivity {
     SharedPreferencesHelper.ClassroomSharedPreference sharedPreference_classroom;
     Button bt_delete;
     TextView tv_msg, tv_msg2;
+    DataBase_Manager_Class dataBase_manager_class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_classroom_delete);
+        dataBase_manager_class = new DataBase_Manager_Class(getApplicationContext());
+        dataBase_manager_class.open();
         builder = new AlertDialog.Builder(getApplicationContext());
         sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext(), "com.pro.volley");
         sharedPreference_classroom = sharedPreferencesHelper.getclassroomSharedPreference();
@@ -83,6 +86,8 @@ public class Classroom_delete extends AppCompatActivity {
                         JSONObject j = new JSONObject(response);
                         if (j.optString("title").equalsIgnoreCase("success")) {
                             sharedPreference_classroom.removeSaved_classrooms_data_array();
+                            dataBase_manager_class.delete_details(CLASS_CODE);
+
                             onBackPressed();
 
 

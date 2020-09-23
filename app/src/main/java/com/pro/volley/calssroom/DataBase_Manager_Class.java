@@ -36,8 +36,8 @@ public class DataBase_Manager_Class {
         ContentValues contentValue = new ContentValues();
 
 
-        contentValue.put(Database_Helper_Indi_Class.COLUMN_DETAILS_CODE, " " + c.getCode() + " ");
-        contentValue.put(Database_Helper_Indi_Class.COLUMN_DETAILS_TITLE, " " + c.getTitle() + " ");
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_DETAILS_CODE, c.getCode().trim());
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_DETAILS_TITLE, c.getTitle().trim());
         try {
             //   database.rawQuery("Insert into " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS +" values ( " +c.getCode() + " , " + c.getTitle() + ");", null);
             // database.rawQuery("schema  " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS, null);
@@ -127,11 +127,12 @@ public class DataBase_Manager_Class {
         int count = 0;
 
         try {
-            String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + "=?";
-            Cursor c = database.rawQuery(countQuery, new String[]{s.trim()});
+            String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + " = '" + s.trim() + "'";
+            String[] args = new String[]{"dbms"};
+            Cursor c = database.rawQuery(countQuery, null);
 
             count = c.getCount();
-            Log.i(" DAta base contains code   :", "        no of row is " + count);
+            Log.i(" DAta base contains code   :", s.trim() + "        no of row is " + count);
 
             c.close();
             if (count == 1) {
@@ -145,14 +146,42 @@ public class DataBase_Manager_Class {
         return false;
     }
 
-    public void delete_details(String code) throws SQLException {
-        open();
+    public void delete_details(String code) {
         try {
-            database.delete(Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS, Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + "=" + code, null);
+            String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + " = '" + code.trim() + "'";
+            Log.i("database delete classroom  :::    :", "raaju" + code.trim() + "hey buddu");
+
+
+            ArrayList<Classroom> arrayList = fetch_details();
+            if (arrayList != null) {
+                for (Classroom c : arrayList) {
+                    Log.e("in delete details :::", ":code :" + c.getCode() + ":title :" + c.getTitle());
+                }
+            }
+            Log.e("in delete details :::", ":code to be deleted :" + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + "::" + code.trim() + ":");
+            Log.e("in delete details :::", ":query is :" + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + " = '" + code.trim() + "'");
+            Cursor resultSet = database.rawQuery("pragma table_info (" + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS + ")", null);
+            resultSet.moveToFirst();
+            String[] cname;
+            cname = new String[10];
+            int count = 0;
+            if (resultSet != null) {
+                while (resultSet.isAfterLast() == false) {
+                    Log.d(" insert details", "try block  " + resultSet.getString(resultSet.getColumnIndex("name")));
+                    cname[count] = resultSet.getString(resultSet.getColumnIndex("name"));
+                    Log.e("in delete details :::", ":row name is:" + cname[count] + ":::");
+
+                    resultSet.moveToNext();
+                }
+
+
+                database.delete(Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS, Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + "=?", new String[]{code.trim()});
+                close();
+            }
+        } catch (Exception e1) {
             close();
-        } catch (Exception e) {
-            close();
-            e.printStackTrace();
+            e1.printStackTrace();
         }
+
     }
 }

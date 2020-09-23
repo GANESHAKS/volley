@@ -119,7 +119,6 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "click on item: ", Toast.LENGTH_LONG).show();
-                Log.i("MYCLAASSROOM ADAPTER   :", "onclick        code is " + myListData.code);
                 boolean f = false;
 
                 if (dataBase_manager_class.class_Contains_code(holder.tv_code.getText().toString().trim())) {
@@ -129,6 +128,8 @@ public class MyClassRoomDetailsAdapter extends RecyclerView.Adapter<MyClassRoomD
                     context.startActivity(i);
                     f = false;
                 } else {
+                    Log.i("MYCLAASSROOM ADAPTER   :", "onclick        code is :" + holder.tv_code.getText().toString().trim()
+                    );
                     Toast.makeText(context, "Class not found Refresh your Screen", Toast.LENGTH_SHORT).show();
                 }
 
