@@ -1,7 +1,6 @@
 package com.pro.volley.calssroom.Individual_Class_Fragments;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,11 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == ITEM_HEADER) {
-            Log.i("OncreateView Holder retuned  ", "  " + viewType);
+           // Log.i("OncreateView Holder retuned  ", "  " + viewType);
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_indi_class_people_header, parent, false);
             return new HeaderViewHolder(view);
         } else {
-            Log.i("OncreateView Holder retuned else ", "  " + viewType);
+            // Log.i("OncreateView Holder retuned else ", "  " + viewType);
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_indivial_class_people, parent, false);
             return new PeopleViewHolder(view);
 
@@ -48,12 +47,12 @@ public class IndividualClass_people_adapter extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         peoples = studentlist.get(position);
         if (getItemViewType(position) == ITEM_HEADER) {
-            Log.d("OnBind    if true", peoples.getName());
+            // Log.d("OnBind    if true", peoples.getName());
             //do initializations
             ((HeaderViewHolder) holder).tv_header.setText(peoples.getName());
             // ((HeaderViewHolder) holder).setHeader(peoplesList.get(position));
         } else {
-            Log.d("OnBind    if false  ", peoples.getName());
+            // Log.d("OnBind    if false  ", peoples.getName());
             //((PeopleViewHolder) holder).setPeople(peoplesList.get(position));
             ((PeopleViewHolder) holder).tv_name.setText(peoples.getName());
             //do initializations

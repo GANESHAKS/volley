@@ -23,6 +23,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.arasthel.asyncjob.AsyncJob;
 import com.google.android.material.snackbar.Snackbar;
 import com.pro.volley.R;
 import com.pro.volley.calssroom.DataBase_Manager_Class;
@@ -41,36 +42,10 @@ public class Individual_Class_People extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     String CLASS_CODE = "";
     Handler handler;
+
     public Individual_Class_People(String CLASS_CODE) {
         // Required empty public constructor
         this.CLASS_CODE = CLASS_CODE;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-       /* Peoples p0 = new Peoples("123456", "nagnna", "null", "people");
-        Peoples p1 = new Peoples("213123", "Students", "null", "header");
-        Peoples p2 = new Peoples("23123", "raaju bhai", "null", "people");
-        peoples = new ArrayList<>();
-        peoples.add(p);
-        peoples.add(p0);
-        peoples.add(p1);
-        peoples.add(p2);
-        Peoples p = new Peoples("12345", "Teachers", "null", "header");
-*/
-        //TODO    fetch data from databse data
-        ArrayList<Peoples> students = dbManager.fetch_people(CLASS_CODE);
-
-        updateUI(students);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                down_load_data();
-            }
-        });
-
-
     }
 
     @Override
@@ -82,14 +57,44 @@ public class Individual_Class_People extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.e("ONACTIVITY CReated :", "INDIVIDUAL CLASs");
+        //TODO    fetch data from databse data
+
+        ArrayList<Peoples> students = dbManager.fetch_people(CLASS_CODE);
+        updateUI(students);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Runnable r = new Runnable() {
+                //   @Override
+                // public void run() {
+                Log.i("SWIPED  : ", "Swiped");
+                down_load_data();
+
+                //}
+                //};
+                //Thread t = new Thread(r);
+                //t.start();
+            }
+        });
+
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_individual__class__people, container, false);
         swipeRefreshLayout = view.findViewById(R.id.sr_classroom_people);
         recyclerView = view.findViewById(R.id.rv_indi_class_people);
-
-
+        ArrayList<Peoples> p = new ArrayList<>();
+        p.add(new Peoples("123", "updating", "", "header"));
+        updateUI(p);
         return view;
     }
 
@@ -104,6 +109,9 @@ public class Individual_Class_People extends Fragment {
         if (arrayList != null) {
             ArrayList<Peoples> t = new ArrayList<>();
             ArrayList<Peoples> s = new ArrayList<>();
+            ArrayList<Peoples> peoplesArrayList = new ArrayList<>();
+
+
             for (Peoples p : arrayList) {
                 if (p.getItem_type().equalsIgnoreCase("teacher")) {
                     t.add(p);
@@ -111,14 +119,31 @@ public class Individual_Class_People extends Fragment {
                     s.add(p);
                 }
             }
-            ArrayList<Peoples> peoplesArrayList = new ArrayList<>();
-            peoplesArrayList.add(new Peoples("123", "Teachers", "null", "header"));
-            peoplesArrayList.addAll(t);
-            peoplesArrayList.add(new Peoples("123", "Students", "null", "header"));
-            peoplesArrayList.addAll(s);
+
+            if (t.size() != 0) {
+                peoplesArrayList.add(new Peoples("123", "Teachers", "null", "header"));
+                peoplesArrayList.addAll(t);
+            }
+
+            if (s.size() != 0) {
+                peoplesArrayList.add(new Peoples("123", "Students", "null", "header"));
+                peoplesArrayList.addAll(s);
+            }
+            if (peoplesArrayList.size() == 0) {
+                peoplesArrayList.add(new Peoples("123", "refresh", "", "header"));
+            }
+
             IndividualClass_people_adapter adapter = new IndividualClass_people_adapter(peoplesArrayList, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
+
+            try {
+
+
+            } catch (Exception e) {
+                Log.e(" update ui  :: ", e.getMessage());
+            }
+
         }
 
 
@@ -160,20 +185,7 @@ public class Individual_Class_People extends Fragment {
             Log.i("Enetrs doin back", "doin bacl");
             final ArrayList<Peoples> teacher = new ArrayList<>();
             final ArrayList<Peoples> students = new ArrayList<>();
-            /*handler = new Handler() {
-                @Override
-                public void handleMessage(@NonNull Message msg) {
 
-                    ArrayList<Peoples> peoples1 = new ArrayList<>();
-                    peoples1.add(new Peoples("123", "Teachers", "null", "header"));
-                    peoples1.addAll(teacher);
-                    peoples1.add(new Peoples("123", "Students", "null", "header"));
-                    peoples1.addAll(students);
-
-                    updateUI(peoples1);
-                }
-            };
-*/
             StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.urlclassstudent) + "/returnPeopleInClass.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -195,11 +207,38 @@ public class Individual_Class_People extends Fragment {
                                 } else students.add(p);
 
                             }
-                            ArrayList<Peoples> te = teacher;
-                            ArrayList<Peoples> s = students;
-                            saveInDatabase(te);
-                            saveInDatabase(s);
+                            AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
+                                @Override
+                                public void doOnBackground() {
+                                    final ArrayList<Peoples> p = new ArrayList<>();
+                                    saveInDatabase(teacher);
+                                    saveInDatabase(students);
+                                    p.addAll(dbManager.fetch_people(CLASS_CODE));
+                                    AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
+                                        @Override
+                                        public void doInUIThread() {
+                                            updateUI(p);
+                                        }
+                                    });
+                                }
+                            });
+                            // ArrayList<Peoples> te = teacher;
+                            // ArrayList<Peoples> s = students;
+                           /* new AsyncJob.AsyncJobBuilder<Boolean>().doInBackground(
+                                    new AsyncJob.AsyncAction<Boolean>() {
+                                        @Override
+                                        public Boolean doAsync() {
 
+
+                                            return true;
+                                        }
+                                    }).doWhenFinished(new AsyncJob.AsyncResultAction() {
+                                @Override
+                                public void onResult(Object o) {
+                                  //  Toast.makeText(getContext(),"updated",Toast.LENGTH_SHORT).show();
+                                }
+                            }).create().start();
+*/
                             //                                  handler.sendEmptyMessage(0);
                         }
 
