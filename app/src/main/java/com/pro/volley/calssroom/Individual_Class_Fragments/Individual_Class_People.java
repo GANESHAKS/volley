@@ -2,12 +2,14 @@ package com.pro.volley.calssroom.Individual_Class_Fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.pro.volley.R;
 import com.pro.volley.calssroom.DataBase_Manager_Class;
 
@@ -37,7 +40,7 @@ public class Individual_Class_People extends Fragment {
     DataBase_Manager_Class dbManager;
     SwipeRefreshLayout swipeRefreshLayout;
     String CLASS_CODE = "";
-
+    Handler handler;
     public Individual_Class_People(String CLASS_CODE) {
         // Required empty public constructor
         this.CLASS_CODE = CLASS_CODE;
@@ -56,8 +59,10 @@ public class Individual_Class_People extends Fragment {
         peoples.add(p2);
         Peoples p = new Peoples("12345", "Teachers", "null", "header");
 */
-        updateUI(null);
         //TODO    fetch data from databse data
+        ArrayList<Peoples> students = dbManager.fetch_people(CLASS_CODE);
+
+        updateUI(students);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,9 +102,34 @@ public class Individual_Class_People extends Fragment {
 
     private void updateUI(ArrayList<Peoples> arrayList) {
         if (arrayList != null) {
-            IndividualClass_people_adapter adapter = new IndividualClass_people_adapter(arrayList, getContext());
+            ArrayList<Peoples> t = new ArrayList<>();
+            ArrayList<Peoples> s = new ArrayList<>();
+            for (Peoples p : arrayList) {
+                if (p.getItem_type().equalsIgnoreCase("teacher")) {
+                    t.add(p);
+                } else {
+                    s.add(p);
+                }
+            }
+            ArrayList<Peoples> peoplesArrayList = new ArrayList<>();
+            peoplesArrayList.add(new Peoples("123", "Teachers", "null", "header"));
+            peoplesArrayList.addAll(t);
+            peoplesArrayList.add(new Peoples("123", "Students", "null", "header"));
+            peoplesArrayList.addAll(s);
+            IndividualClass_people_adapter adapter = new IndividualClass_people_adapter(peoplesArrayList, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
+        }
+
+
+    }
+
+    private void saveInDatabase(ArrayList<Peoples> peoples) {
+        if (peoples != null) {
+            for (Peoples p : peoples) {
+
+                dbManager.insert_people(p, CLASS_CODE);
+            }
         }
 
 
@@ -110,8 +140,8 @@ public class Individual_Class_People extends Fragment {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
 
-            Log.i("onPreExecute", " executed");
-
+            Log.i("onPreExecute", " executed   :::" + CLASS_CODE);
+            updateUI(dbManager.fetch_people(CLASS_CODE));
             swipeRefreshLayout.setRefreshing(false);
 
 
@@ -128,6 +158,22 @@ public class Individual_Class_People extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             Log.i("Enetrs doin back", "doin bacl");
+            final ArrayList<Peoples> teacher = new ArrayList<>();
+            final ArrayList<Peoples> students = new ArrayList<>();
+            /*handler = new Handler() {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+
+                    ArrayList<Peoples> peoples1 = new ArrayList<>();
+                    peoples1.add(new Peoples("123", "Teachers", "null", "header"));
+                    peoples1.addAll(teacher);
+                    peoples1.add(new Peoples("123", "Students", "null", "header"));
+                    peoples1.addAll(students);
+
+                    updateUI(peoples1);
+                }
+            };
+*/
             StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.urlclassstudent) + "/returnPeopleInClass.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -140,8 +186,6 @@ public class Individual_Class_People extends Fragment {
 
                             JSONArray jsonArray = jsonObject.getJSONArray("message");
                             ArrayList<Peoples> peoples = new ArrayList<>();
-                            ArrayList<Peoples> teacher = new ArrayList<>();
-                            ArrayList<Peoples> students = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject j = jsonArray.getJSONObject(i);
 
@@ -151,12 +195,12 @@ public class Individual_Class_People extends Fragment {
                                 } else students.add(p);
 
                             }
-                            peoples.add(new Peoples("123", "Teachers", "null", "header"));
-                            peoples.addAll(teacher);
-                            peoples.add(new Peoples("123", "Students", "null", "header"));
-                            peoples.addAll(students);
+                            ArrayList<Peoples> te = teacher;
+                            ArrayList<Peoples> s = students;
+                            saveInDatabase(te);
+                            saveInDatabase(s);
 
-                            updateUI(peoples);
+                            //                                  handler.sendEmptyMessage(0);
                         }
 
 
@@ -169,6 +213,10 @@ public class Individual_Class_People extends Fragment {
                 public void onErrorResponse(VolleyError error) {
 
                     Log.i("erroer in background req", " error listener");
+                    CoordinatorLayout coordinatorLayout = getActivity().findViewById(R.id.coordinatorLayout_indiclass);
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "unable to connect to server", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }) {
                 @Override

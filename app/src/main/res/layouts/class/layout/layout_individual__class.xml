@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/coordinatorLayout_indiclass"
 
     tools:context=".calssroom.Individual_Class">
 

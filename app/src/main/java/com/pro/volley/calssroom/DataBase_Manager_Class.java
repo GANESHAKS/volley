@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.pro.volley.calssroom.Individual_Class_Fragments.Peoples;
+
 import java.util.ArrayList;
 
 public class DataBase_Manager_Class {
@@ -148,7 +150,7 @@ public class DataBase_Manager_Class {
 
     public void delete_details(String code) {
         try {
-            String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + " = '" + code.trim() + "'";
+           /* String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS.trim() + " where " + Database_Helper_Indi_Class.COLUMN_DETAILS_CODE + " = '" + code.trim() + "'";
             Log.i("database delete classroom  :::    :", "raaju" + code.trim() + "hey buddu");
 
 
@@ -172,16 +174,122 @@ public class DataBase_Manager_Class {
                     Log.e("in delete details :::", ":row name is:" + cname[count] + ":::");
 
                     resultSet.moveToNext();
-                }
+                }*/
 
 
-                database.delete(Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS, Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + "=?", new String[]{code.trim()});
-                close();
-            }
+            database.delete(Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS, Database_Helper_Indi_Class.COLUMN_DETAILS_CODE.trim() + "=?", new String[]{code.trim()});
+            close();
         } catch (Exception e1) {
             close();
             e1.printStackTrace();
         }
 
     }
+
+    public ArrayList<Peoples> fetch_people(String code) {
+        ArrayList<Peoples> arrayList = new ArrayList<>();
+        Log.e("fetch people CLASS CODE IS ", code);
+        String query = "select * from " + Database_Helper_Indi_Class.TABLE_PEOPLE + " where " + Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE.trim() + "='" + code.trim() + "'";
+        String[] columns = new String[]{Database_Helper_Indi_Class.COLUMN_PEOPLE_ID, Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE, Database_Helper_Indi_Class.COLUMN_PEOPLE_NAME,
+                Database_Helper_Indi_Class.COLUMN_PEOPLE_PIC, Database_Helper_Indi_Class.COLUMN_PEOPLE_TYPE};
+
+        try {
+
+           /* Cursor resultSet = database.rawQuery("pragma table_info (" + Database_Helper_Indi_Class.TABLE_CLASSROOM_DETAILS + ")", null);
+            resultSet.moveToFirst();
+            String[] cname;
+            cname = new String[2];
+            int count = 0;
+            if (resultSet != null) {
+                while (resultSet.isAfterLast() == false) {
+                    Log.d(" fetch details", "try block  " + resultSet.getString(resultSet.getColumnIndex("name")));
+                    cname[count] = resultSet.getString(resultSet.getColumnIndex("name"));
+
+                    resultSet.moveToNext();
+                }
+            }*/
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor != null) {
+                Log.d("fetch data try block ", " no of rows = " + cursor.getCount());
+
+                cursor.moveToFirst();
+                while (cursor.isAfterLast() == false) {
+                    String c = cursor.getString(cursor.getColumnIndex(Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE));
+                    String n = cursor.getString(cursor.getColumnIndex(Database_Helper_Indi_Class.COLUMN_PEOPLE_NAME));
+                    String id = cursor.getString(cursor.getColumnIndex(Database_Helper_Indi_Class.COLUMN_PEOPLE_ID));
+                    String pic = cursor.getString(cursor.getColumnIndex(Database_Helper_Indi_Class.COLUMN_PEOPLE_PIC));
+                    String type = cursor.getString(cursor.getColumnIndex(Database_Helper_Indi_Class.COLUMN_PEOPLE_TYPE));
+
+                    arrayList.add(new Peoples(id, n, pic, type));
+                    Log.d("fetch data try block ", "  code = " + c);
+
+
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            close();
+        } catch (Exception e) {
+            close();
+            Log.d("Error fetch details", "Catch block  " + e.getMessage());
+
+            e.printStackTrace();
+        }
+
+
+        return arrayList;
+    }
+
+    public int getPeopleCount(String code) {
+        int count = 0;
+        String countQuery = "SELECT  * FROM " + Database_Helper_Indi_Class.TABLE_PEOPLE.trim() + " where " + Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE + "=" + code.trim();
+        Cursor cursor = database.rawQuery(countQuery, null);
+        count = cursor.getCount();
+        cursor.close();
+
+        return count;
+    }
+
+    public void delete_people(String code, String usn) {
+        try {
+
+            database.delete(Database_Helper_Indi_Class.TABLE_PEOPLE, Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE.trim() + "=? , " + Database_Helper_Indi_Class.COLUMN_PEOPLE_ID + "=?", new String[]{code.trim(), usn});
+            close();
+
+        } catch (Exception e1) {
+            close();
+            e1.printStackTrace();
+        }
+
+    }
+
+
+    public boolean insert_people(Peoples p, String CLASS_CODE) {
+
+        ContentValues contentValue = new ContentValues();
+
+
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_PEOPLE_CODE, CLASS_CODE);
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_PEOPLE_ID, p.getId());
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_PEOPLE_NAME, p.getName());
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_PEOPLE_TYPE, p.getItem_type());
+        contentValue.put(Database_Helper_Indi_Class.COLUMN_PEOPLE_PIC, p.getPic());
+
+
+        try {
+            long c1 = database.insertOrThrow(Database_Helper_Indi_Class.TABLE_PEOPLE, null, contentValue);
+
+            return c1 >= -1;
+        } catch (Exception e) {
+            Log.d("Error insert details", "Catch block  " + e.getMessage());
+            close();
+            e.printStackTrace();
+        }
+
+
+        return true;
+    }
 }
+
+
+

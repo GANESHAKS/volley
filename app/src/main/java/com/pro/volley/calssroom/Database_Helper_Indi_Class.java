@@ -12,6 +12,7 @@ public class Database_Helper_Indi_Class extends SQLiteOpenHelper {
     public static final String TABLE_PEOPLE = "People";
     public static final String COLUMN_PEOPLE_ID = "Usn";
     public static final String COLUMN_PEOPLE_NAME = "Name";
+    public static final String COLUMN_PEOPLE_PIC = "Pic";
     public static final String COLUMN_PEOPLE_TYPE = "Type";
     public static final String COLUMN_PEOPLE_CODE = "Code";
     // Definition of table and column names of work table
@@ -40,8 +41,11 @@ public class Database_Helper_Indi_Class extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_PEOPLE = "CREATE TABLE " + TABLE_PEOPLE + " (" +
             COLUMN_PEOPLE_ID + " TEXT, " +
             COLUMN_PEOPLE_NAME + " TEXT, " +
-            COLUMN_PEOPLE_CODE + " TEXT ," +
-            COLUMN_PEOPLE_TYPE + " TEXT, " + COLUMN_PEOPLE_CODE + "TEXT,PRIMARY KEY(" + COLUMN_PEOPLE_CODE + "," + COLUMN_PEOPLE_ID + "),"
+            COLUMN_PEOPLE_CODE + " TEXT," +
+            COLUMN_PEOPLE_TYPE + " TEXT, " +
+            COLUMN_PEOPLE_PIC + " TEXT, " +
+
+            COLUMN_PEOPLE_CODE + "TEXT,PRIMARY KEY(" + COLUMN_PEOPLE_CODE + "," + COLUMN_PEOPLE_ID + "),"
             + "FOREIGN KEY(" + COLUMN_PEOPLE_CODE + ") REFERENCES " + TABLE_CLASSROOM_DETAILS + "(" + COLUMN_DETAILS_CODE + ") ON DELETE CASCADE "
             + ");";
     private static final String CREATE_TABLE_WORK = "CREATE TABLE " + TABLE_WORK + " (" +
