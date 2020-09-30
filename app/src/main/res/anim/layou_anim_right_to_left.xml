@@ -4,6 +4,6 @@
 
     android:animation="@anim/right_to_left"
     android:animationOrder="normal"
-    android:delay="35%" />
+    android:delay="20%" />
 
 

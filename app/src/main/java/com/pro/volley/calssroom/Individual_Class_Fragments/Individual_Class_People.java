@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -137,6 +139,9 @@ public class Individual_Class_People extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
 
+            final LayoutAnimationController controller =
+                    AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layou_anim_right_to_left);
+            recyclerView.setLayoutAnimation(controller);
             try {
 
 
